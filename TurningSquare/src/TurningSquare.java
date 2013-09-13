@@ -45,7 +45,10 @@ public class TurningSquare {
 			tempy -= y;
 			
 			vertex[i][0] = (float) (tempx * Math.cos(theta * Math.PI / 180) - tempy * Math.sin(theta+Math.PI/180));
-			vertex[i][1] = (float) (tempx * Math.sin(theta*Math.PI/180) + Math.cos(theta * Math.PI/180));
+			vertex[i][1] = (float) (tempx * Math.sin(theta*Math.PI/180) + tempy * Math.cos(theta * Math.PI/180));
+			
+			vertex[i][0] += x;
+			vertex[i][1] += y;
 			
 		}
 	}
@@ -71,7 +74,7 @@ public class TurningSquare {
 			
 			Display.update();
 			Display.sync(60);//run this loop 60 times per second
-			updateFPS();
+			
 		}
 		
 		Display.destroy();
@@ -80,12 +83,27 @@ public class TurningSquare {
 	
 	private void update(int delta) {
 		// TODO Auto-generated method stub
-		
+		rotation = 0.05f + delta;
+		updateFPS();
 	}
 
 	private void renderGL() {
 		// TODO Auto-generated method stub
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
+		//RGB and alpha settings
+		GL11.glColor3f(0.5f, 05f, 1.0f);
+		
+		//draw square
+		rotate(rotation);
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glVertex2f(vertex[0][0], vertex[0][1]);
+		GL11.glVertex2f(vertex[1][0], vertex[1][1]);
+		GL11.glVertex2f(vertex[2][0], vertex[2][1]);
+		GL11.glVertex2f(vertex[3][0], vertex[3][1]);
+		
+		GL11.glEnd();
+
 	}
 
 	private void updateFPS() {
