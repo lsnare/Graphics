@@ -13,11 +13,14 @@ public class TurningSquare {
 	long lastFrame;
 	int fps;
 	long lastFPS;
-	
+	float x = 400.0f, y = 300.0f;
+	float[][] vertex = {{x-100, y-100}, {x+100, y-100}, {x+100, y+100}, {x-100, y+100}};
+	float rotation = 0.0f;
 	/**
 	 * 
 	 * Get accurate machine-independent time
 	 */
+	
 	public long getTime(){
 		return((Sys.getTime() * 1000) / Sys.getTimerResolution());
 	}
@@ -31,6 +34,20 @@ public class TurningSquare {
 		int delta = (int)(time-lastFrame);
 		lastFrame = time;
 		return delta;
+	}
+	
+	public void rotate(double theta){
+		for(int i = 0; i < vertex.length; i++){
+			float tempx = vertex[1][0];
+			float tempy = vertex[1][1];
+			
+			tempx -= x;
+			tempy -= y;
+			
+			vertex[i][0] = (float) (tempx * Math.cos(theta * Math.PI / 180) - tempy * Math.sin(theta+Math.PI/180));
+			vertex[i][1] = (float) (tempx * Math.sin(theta*Math.PI/180) + Math.cos(theta * Math.PI/180));
+			
+		}
 	}
 	
 	public void start(){
