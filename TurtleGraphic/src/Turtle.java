@@ -148,7 +148,7 @@ public class Turtle {
 			forward(1);
 			left(135);
 			forward(1);
-			left(angle);
+			right(angle);
 			size+=5;//1,5
 		}while(size<max);
 		pen(false);
