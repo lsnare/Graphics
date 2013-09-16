@@ -6,7 +6,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 
-public class StacksDemoThree {
+public class StacksDemoFour {
 
 	float x = 400.0f, y = 300.0f; 
 	float[][] vertex = { {x-100, y-100}, {x+100, y-100}, {x+100, y+100}, {x-100, y+100} }; 
@@ -95,7 +95,7 @@ public class StacksDemoThree {
 		fps++; } 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		StacksDemoThree example = new StacksDemoThree();
+		StacksDemoFour example = new StacksDemoFour();
 		example.start();
 	}
 
