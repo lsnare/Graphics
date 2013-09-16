@@ -1,5 +1,6 @@
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -58,7 +59,22 @@ public class StacksDemoTwo {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW); } 
 	
 	public void update(int delta) { 
-		rotation = 0.05f * delta; updateFPS(); } 
+		rotation = 0.05f * delta; 
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+			x -= 0.35f * delta;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+			x += 0.35f * delta;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+			y += 0.35f * delta;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+			y -= 0.35f * delta;
+		}
+		updateFPS(); 
+		} 
 	
 	public void updateFPS() { 
 		if(getTime() - lastFPS > 1000) { 
