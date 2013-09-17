@@ -157,7 +157,7 @@ public class Turtle {
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		turtle.init(370,310, 0);
-		turtle.patternthree(100, 80, 5000);//90 with size+=1, 80 with size+=5
+		turtle.patternthree(10, 80, 5000);//90 with size+=1, 80 with size+=5
 		turtle.show();
 	}
 	
