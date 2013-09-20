@@ -9,9 +9,11 @@
 package strawfall;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.XRandR.Screen;
 import org.lwjgl.util.vector.Vector3f;
 
 public class StrawFall {
@@ -24,6 +26,9 @@ public class StrawFall {
 	
 	float x = 0;
 	float y = Display.getHeight();
+	int numlines = 100;
+	int dX;
+	int dY;
 	
 	public void show(){
 	
@@ -39,6 +44,8 @@ public class StrawFall {
 		initGL();
 		x = 0;
 		y = Display.getHeight();
+		dX = Display.getWidth()/numlines;
+		dY = Display.getHeight()/numlines;
 		
 		while(!Display.isCloseRequested()){
 			renderGL();
@@ -58,9 +65,7 @@ public class StrawFall {
 		GL11.glVertex2f(0,Display.getHeight());
 		GL11.glVertex2f(0,0);
 		
-		int numlines = 50;
-		int dX = Display.getWidth()/numlines;
-		int dY = Display.getHeight()/numlines;
+		
 		//generate the bottom half of the straw fall
 		for(int i = 1; i < numlines; i++){
 			GL11.glColor3f(baseColor[i%3].x, baseColor[i%3].y, baseColor[i%3].z);
@@ -76,7 +81,7 @@ public class StrawFall {
 		for(int i = 0; i < numlines; i++){
 			GL11.glColor3f(baseColor[i%3].x, baseColor[i%3].y, baseColor[i%3].z);
 			GL11.glVertex2f(x+i*dX, y);
-			GL11.glVertex2f(Display.getWidth(), y-i*dY);
+			GL11.glVertex2f(Display.getWidth(), y-i*dY);//problem here
 		}
 		
 		GL11.glEnd(); 
@@ -86,7 +91,7 @@ public class StrawFall {
 	public void initGL() { 
 		GL11.glMatrixMode(GL11.GL_PROJECTION); 
 		GL11.glLoadIdentity(); 
-		GL11.glOrtho(0, 800, 0, 600, 1, -1); 
+		GL11.glOrtho(0, Display.getWidth(), 0, Display.getHeight(), 1, -1); 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW); 
 		} 
 	
