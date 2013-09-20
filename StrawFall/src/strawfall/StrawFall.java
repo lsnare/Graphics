@@ -58,11 +58,14 @@ public class StrawFall {
 		GL11.glVertex2f(0,Display.getHeight());
 		GL11.glVertex2f(0,0);
 		
+		int numlines = 50;
+		int dX = Display.getWidth()/numlines;
+		int dY = Display.getHeight()/numlines;
 		//generate the bottom half of the straw fall
-		for(int i = 1; i <= Display.getWidth(); i++){
+		for(int i = 1; i < numlines; i++){
 			GL11.glColor3f(baseColor[i%3].x, baseColor[i%3].y, baseColor[i%3].z);
-			GL11.glVertex2f(0,y-i*15);
-			GL11.glVertex2f(x+i*15,0);
+			GL11.glVertex2f(0,y-i*dY);
+			GL11.glVertex2f(x+i*dX,0);
 		}
 
 		//top line
@@ -70,10 +73,10 @@ public class StrawFall {
 		GL11.glVertex2f(Display.getWidth(),y);
 		
 		//generate the top half of the straw fall
-		for(int i = 0; i <= Display.getWidth(); i++){
+		for(int i = 0; i < numlines; i++){
 			GL11.glColor3f(baseColor[i%3].x, baseColor[i%3].y, baseColor[i%3].z);
-			GL11.glVertex2f(x+15*i, y);
-			GL11.glVertex2f(Display.getWidth(), y-15*i);
+			GL11.glVertex2f(x+i*dX, y);
+			GL11.glVertex2f(Display.getWidth(), y-i*dY);
 		}
 		
 		GL11.glEnd(); 
