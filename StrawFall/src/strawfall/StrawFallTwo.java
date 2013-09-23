@@ -9,6 +9,7 @@
 package strawfall;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -16,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.XRandR.Screen;
 import org.lwjgl.util.vector.Vector3f;
 
-public class StrawFall {
+public class StrawFallTwo {
 	
 	public Vector3f red = new Vector3f(1.0f,0.0f,0.0f);
 	public Vector3f blue = new Vector3f(0.0f,1.0f,0.0f);
@@ -29,6 +30,9 @@ public class StrawFall {
 	int numlines = 100;
 	int dX;
 	int dY;
+	int delta;
+	int xx = 0;
+	int yy = 0;
 	
 	public void show(){
 	
@@ -49,6 +53,7 @@ public class StrawFall {
 		
 		while(!Display.isCloseRequested()){
 			renderGL();
+			update(delta);
 			Display.update();
 		}
 		Display.destroy();	
@@ -58,6 +63,7 @@ public class StrawFall {
 	void renderGL(){
 		
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); //R, G, B, and Alpha. 
+		GL11.glViewport(xx, yy, (int)Display.getWidth()*10, (int)Display.getHeight()*10); //great for scaling
 		GL11.glColor3f(0, 1, 0);
 		GL11.glBegin(GL11.GL_LINES); 
 		
@@ -89,14 +95,30 @@ public class StrawFall {
 		} 
 	
 	public void initGL() { 
+		try {
+			Keyboard.create();
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Keyboard.enableRepeatEvents(true);
 		GL11.glMatrixMode(GL11.GL_PROJECTION); 
 		GL11.glLoadIdentity(); 
 		GL11.glOrtho(0, Display.getWidth(), 0, Display.getHeight(), 1, -1); 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW); 
 		} 
 	
+	public void update(int delta){
+		delta += 1;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) xx += delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) xx -= delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) yy -= delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) yy += delta;
+
+	}
+	
 	public static void main(String[] args) {
-		StrawFall straw = new StrawFall();
+		StrawFallTwo straw = new StrawFallTwo();
 		straw.show();
 	}
 
