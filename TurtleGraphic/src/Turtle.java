@@ -4,6 +4,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
 
 
 public class Turtle {
@@ -15,6 +16,13 @@ public class Turtle {
 	private boolean ink;
 	@SuppressWarnings("unused")
 	private Location loc;
+	
+
+	public Vector3f red = new Vector3f(1.0f,0.0f,0.0f);
+	public Vector3f blue = new Vector3f(0.0f,1.0f,0.0f);
+	public Vector3f green = new Vector3f(0.0f,0.0f,1.0f);
+	
+	public Vector3f[] baseColor = {red,green,blue};
 	
 	//tiny class for location of turtle
 	private class Location{
@@ -85,7 +93,7 @@ public class Turtle {
 		//init opengl
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 800, 0, 550, 1,-1);
+		GL11.glOrtho(0, Display.getWidth(), 0, Display.getHeight(), 1,-1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
 		while(!Display.isCloseRequested()){
@@ -93,8 +101,11 @@ public class Turtle {
 			GL11.glColor3f(0.0f, 0.5f, 0.5f);
 			GL11.glBegin(GL11.GL_LINES);
 			
+			int i = 0;
 			for (Location ll : path){
+				GL11.glColor3f(baseColor[i%3].x, baseColor[i%3].y, baseColor[i%3].z);
 				GL11.glVertex2f(ll.x, ll.y);
+				i++;
 			}
 			
 			GL11.glEnd();
@@ -137,7 +148,7 @@ public class Turtle {
 		pen(false);
 	}
 	
-	public void patternthree(int size, double angle, int max){
+	public void pentogram(int size, double angle, int max){
 		pen(true);
 		do{
 			
@@ -154,10 +165,29 @@ public class Turtle {
 		pen(false);
 	}
 	
+	void thetaMaze(int size, double angle, int max, int n){
+		pen(true);
+		forward(size);
+		right(angle);
+		forward(size);
+		right(angle);
+		size+=5;
+		do{
+			forward(size);
+			right(angle);
+			forward(size);
+			right(angle + n%2);
+			n+=1;
+			size+=5;
+		}while(size<max);
+		pen(false);
+	}
+	
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		turtle.init(370,310, 0);
-		turtle.patternthree(100, 80, 5000);//90 with size+=1, 80 with size+=5
+		//turtle.pentogram(100, 80, 5000);//90 with size+=1, 80 with size+=5
+		turtle.thetaMaze(10,  90, 1000, 2);
 		turtle.show();
 	}
 	
