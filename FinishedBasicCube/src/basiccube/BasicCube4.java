@@ -9,19 +9,20 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
-public class BasicCube2 {
+public class BasicCube4 {
 	
 	int numCorners = 8;
 	 
 	//Eye location cords
-	float eyex = 0f, eyey=0f, eyez=2f;
+	float eyex = 0f, eyey=0f, eyez=5f;
+	float znear = 4f, zfar = 60f;
 	//Cube Cords
 	Vector3f[] corners = new Vector3f[numCorners];
 	
 	// Screen dimensions
 	//SVGA 800x600
 	// XGA 1024x768
-	int WIDTH = 600, HEIGHT = 600;
+	int WIDTH = 1024, HEIGHT = 768;
 
 	float x = 400.0f, y = 300.0f;
 	
@@ -29,7 +30,7 @@ public class BasicCube2 {
 	float[][]vertex = { {x-100, y-100}, {x+100, y-100},{x+100, y+100}, {x-100, y+100}};
 	
 	/* angle to rotate by */
-	float rotation = 0.0f;
+	float rotation = 20.0f;
 	
 	//take at last frame
 	long lastFrame;
@@ -49,7 +50,6 @@ public class BasicCube2 {
 		corners[5] = new Vector3f(-0.5f,  0.5f, -0.5f);
 		corners[6] = new Vector3f( 0.5f,  0.5f, -0.5f);
 		corners[7] = new Vector3f( 0.5f, -0.5f, -0.5f);
-		
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class BasicCube2 {
 		GL11.glLoadIdentity();
 		
 		float aspect = WIDTH / (float) HEIGHT;
-		GLU.gluPerspective(60f, aspect, 0.1f, 5.0f);
+		GLU.gluPerspective(60f, aspect, znear, zfar);
 		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
 		//GL11.glOrtho(-1, 1, -1, 1, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -125,7 +125,7 @@ public class BasicCube2 {
 	
 	public void update(int delta){
 		//Computer new coordinate for the object based on time elapsed
-		rotation += 0.035f * delta;
+		rotation += 0.015f * delta;
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) eyez -= 0.035f;
 		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) eyez += 0.035f;
@@ -138,7 +138,7 @@ public class BasicCube2 {
 		GL11.glLoadIdentity();
 		
 		float aspect = WIDTH / (float) HEIGHT;
-		GLU.gluPerspective(60f, aspect, 0.1f, 5.0f);
+		GLU.gluPerspective(60f, aspect, znear, zfar);
 		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -146,10 +146,36 @@ public class BasicCube2 {
 		
 		//Enable Z buffer Algorithm
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		//Draw the square
-		GL11.glPushMatrix();
-		GL11.glRotatef(rotation, 1f, 1f, 1f);
 		
+		
+		for(int i = -3; i < 4; i++){
+		//Draw the square
+		
+		GL11.glPushMatrix();
+		GL11.glTranslatef(2f*i, 0f, 0f);
+		GL11.glRotatef(rotation, 1f, 0.5f, 1f);
+		
+		renderCube();
+
+		GL11.glPopMatrix();
+		}
+		
+		/*
+		for(int i = -3; i < 4; i++){
+			//Draw the square
+			
+			GL11.glPushMatrix();
+			GL11.glTranslatef(2f*i, 2f*i, 0f);
+			GL11.glRotatef(rotation, 1f, 0.5f, 1f);
+			
+			renderCube();
+
+			GL11.glPopMatrix();
+			}
+		*/
+	}
+	
+	public void renderCube(){
 		GL11.glBegin(GL11.GL_QUADS);
 		//Face 1
 		GL11.glColor3f(1.0f, 0.0f, 0.0f);
@@ -187,8 +213,7 @@ public class BasicCube2 {
 		GL11.glVertex3f(corners[2].x, corners[2].y, corners[2].z);
 		
 		GL11.glEnd();
-		GL11.glPopMatrix();
-
+		
 	}
 	
 	public void updateFPS(){
@@ -217,7 +242,7 @@ public class BasicCube2 {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		BasicCube2 cube = new BasicCube2();
+		BasicCube4 cube = new BasicCube4();
 		cube.start();
 	}
 

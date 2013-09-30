@@ -82,7 +82,7 @@ public class Turtle {
 	public void show(){
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(1000,600));
+			Display.setDisplayMode(new DisplayMode(1000,800));
 			Display.create();
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
