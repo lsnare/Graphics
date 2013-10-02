@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
-public class BasicCube5 {
+public class CubeTie {
 	
 	int numCorners = 8;
 	 
@@ -52,7 +52,7 @@ public class BasicCube5 {
 	public void initCube(){
 		corners[0] = new Vector3f(-0.5f, -0.5f,  0.5f);
 		corners[1] = new Vector3f(-0.5f,  0.5f,  0.5f);
-		corners[2] = new Vector3f( 0.5f,  0.5f,  0.5f);
+		corners[2] = new Vector3f( 0.5f, 0.5f,  0.5f);
 		corners[3] = new Vector3f( 0.5f, -0.5f,  0.5f);
 		corners[4] = new Vector3f(-0.5f, -0.5f, -0.5f);
 		corners[5] = new Vector3f(-0.5f,  0.5f, -0.5f);
@@ -142,6 +142,7 @@ public class BasicCube5 {
 		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) eyez -= 0.035f;
 		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) eyez += 0.035f;
 
+
 		updateFPS();
 	}
 	
@@ -162,10 +163,26 @@ public class BasicCube5 {
 		GL11.glRotatef(rotation, 1f, 0.5f, 1f);
 		GL11.glRotatef(65+rotation,0f,1f,0);
 		
+		
 		for(int i = -3; i < 4; i++){
 		//Draw the square
 			GL11.glPushMatrix();
-			GL11.glTranslatef(2f*i, 0f, 0f);
+			GL11.glTranslatef(i, 0.0f, 0f);
+			renderCube();
+			GL11.glPopMatrix();
+			
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-3f, i, 0f);
+			renderCube();
+			GL11.glPopMatrix();
+			
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-3f, -3f, i);
+			renderCube();
+			GL11.glPopMatrix();
+			
+			GL11.glPushMatrix();
+			GL11.glTranslatef(-3f, i, i);
 			renderCube();
 			GL11.glPopMatrix();
 		}
@@ -272,7 +289,7 @@ public class BasicCube5 {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		BasicCube5 cube = new BasicCube5();
+		CubeTie cube = new CubeTie();
 		cube.start();
 	}
 

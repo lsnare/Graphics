@@ -1,5 +1,8 @@
 package basiccube;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -13,6 +16,11 @@ public class BasicCube4 {
 	
 	int numCorners = 8;
 	 
+	FloatBuffer matSpecular;
+	FloatBuffer whiteLight;
+	FloatBuffer lightPosition;
+	FloatBuffer lModeAmbient;
+	
 	//Eye location cords
 	float eyex = 0f, eyey=0f, eyez=5f;
 	float znear = 4f, zfar = 60f;
@@ -132,6 +140,39 @@ public class BasicCube4 {
 
 		updateFPS();
 	}
+	
+	private void initLightArrays() {
+        // TODO Auto-generated method stub
+        //no constructor, not handled by JVM
+        //malloc, memory management done outside of java
+        matSpecular = BufferUtils.createFloatBuffer(4);
+        matSpecular.put(1.0f).put(1.0f).put(1.0f).put(1.0f).flip();
+       
+        lightPosition = BufferUtils.createFloatBuffer(4);
+        lightPosition.put(0.0f).put(1.0f).put(1.0f).put(1.0f).flip();
+       
+        lModeAmbient = BufferUtils.createFloatBuffer(4);
+        lModeAmbient.put(0.2f).put(0.2f).put(0.2f).put(0.1f).flip();
+       
+
+        whiteLight = BufferUtils.createFloatBuffer(4);
+        whiteLight.put(1.0f).put(1.0f).put(1.0f).put(1.0f).flip();
+       
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR, matSpecular);
+        GL11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 60.0f);
+       
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition);
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, whiteLight);
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, whiteLight);
+        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, lModeAmbient);
+       
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_LIGHT0);
+        GL11.glEnable((GL11.GL_COLOR_MATERIAL));
+        GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
+
+}
 	
 	public void renderGL(){
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
