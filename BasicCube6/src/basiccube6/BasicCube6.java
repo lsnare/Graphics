@@ -2,6 +2,7 @@ package basiccube6;
 
 import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -9,11 +10,14 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.glu.Sphere;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 public class BasicCube6 {
 
+	Sphere sphere = new Sphere();
+	
 	long lastFrame;
 	
 	int fps;
@@ -150,13 +154,80 @@ public class BasicCube6 {
 			int delta = getDelta();
 			
 			update(delta);
-			renderCube();
+			renderGL();
 			
 			Display.update();
 			Display.sync(60);
 		}
 		
 		Display.destroy();
+	}
+	
+	private void renderGL() {
+		
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		
+		float aspectRatio = WIDTH/(float)HEIGHT;
+		GLU.gluPerspective(60f, aspectRatio, 0.1f, 15f);
+		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
+		GL11.glViewport(0, 0, WIDTH, HEIGHT);
+		
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPushMatrix();
+		GL11.glRotatef(rotation, 1, 0, 0);
+		GL11.glRotatef(rotation, 0, 1, 0);
+		GL11.glRotatef(rotation, 0, 0, 1);
+		renderCube();
+		GL11.glColor3f(0.7f, 0.4f, 0.5f);
+		sphere.draw(.6f, 120, 120);
+		GL11.glPopMatrix();
+		
+	}
+
+	private void initLightArrays() {
+        // TODO Auto-generated method stub
+        //no constructor, not handled by JVM
+        //malloc, memory management done outside of java
+        matSpecular = BufferUtils.createFloatBuffer(4);
+        matSpecular.put(2.0f).put(2.0f).put(2.0f).put(1.0f).flip();
+       
+        lightPosition = BufferUtils.createFloatBuffer(4);
+        lightPosition.put(-1f).put(1f).put(0.5f).put(0f).flip();
+
+        whiteLight = BufferUtils.createFloatBuffer(4);
+        whiteLight.put(0.5f).put(0.5f).put(0.5f).put(1.0f).flip();
+        
+        lModeAmbient = BufferUtils.createFloatBuffer(4);
+        lModeAmbient.put(0.1f).put(0.1f).put(0.1f).put(1f).flip();
+       
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR, matSpecular);
+        GL11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, 60.0f);
+       
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition);
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, whiteLight);
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, whiteLight);
+        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, lModeAmbient);
+       
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_LIGHT1);
+        GL11.glEnable((GL11.GL_COLOR_MATERIAL));
+        GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
+
+}
+	
+	private void renderCube(){
+		GL11.glBegin(GL11.GL_TRIANGLES);
+		
+		for(int i = 0; i < numVertices; i++){
+			GL11.glNormal3f(normal[i].x, normal[i].y, normal[i].z);
+			GL11.glColor3f(color[i].x, color[i].y, color[i].z);
+			GL11.glVertex3f(point[i].x, point[i].y, point[i].z);
+		}
+		
+		GL11.glEnd();
 	}
 	
 	public void initGL(){
@@ -187,7 +258,8 @@ public class BasicCube6 {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		BasicCube6 cube = new BasicCube6();
+		cube.start();
 	}
 
 }

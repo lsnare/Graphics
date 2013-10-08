@@ -23,7 +23,7 @@ public class CubeTie {
 	
 	//Eye location cords
 	float eyex = 0f, eyey=0f, eyez=5f;
-	float znear = 2f, zfar = 60f;
+	float znear = .1f, zfar = 60f;
 	//Cube Cords
 	Vector3f[] corners = new Vector3f[numCorners];
 	
