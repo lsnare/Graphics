@@ -164,63 +164,73 @@ public class CubeTie {
 		GL11.glRotatef(65+rotation,0f,1f,0);
 		
 		
-		for(int i = -3; i < 4; i++){
+		for(int i = 0; i < 3; i++){
 		//Draw the square
 			GL11.glPushMatrix();
 			GL11.glTranslatef(i, 0.0f, 0f);
-			renderCube();
+			renderCube(i,0,0);
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
-			GL11.glTranslatef(-3f, i, 0f);
-			renderCube();
+			GL11.glTranslatef(0, 0.0f, i);
+			renderCube(0,i,0);
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
-			GL11.glTranslatef(-3f, -3f, i);
-			renderCube();
+			GL11.glTranslatef(2, i, 0f);
+			renderCube(0,0,i);
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
-			GL11.glTranslatef(-3f, i, i);
-			renderCube();
+			GL11.glTranslatef(0, i, 2f);
+			renderCube(i,0,0);
+			GL11.glPopMatrix();
+			
+			GL11.glPushMatrix();
+			GL11.glTranslatef(2, 2, i);
+			renderCube(0,i,0);
+			GL11.glPopMatrix();
+			
+			GL11.glPushMatrix();
+			GL11.glTranslatef(i, 2, 2);
+			renderCube(0,0,i);
 			GL11.glPopMatrix();
 		}
 		
 	}
 	
-	public void renderCube(){
+	public void renderCube(float r, float g, float b){
 		GL11.glBegin(GL11.GL_QUADS);
 		//Face 1
-		GL11.glColor3f(1.0f, 0.0f, 0.0f);
+		GL11.glColor3f(r,g,b);
 		GL11.glVertex3f(corners[0].x, corners[0].y, corners[0].z);
 		GL11.glVertex3f(corners[1].x, corners[1].y, corners[1].z);
 		GL11.glVertex3f(corners[2].x, corners[2].y, corners[2].z);
 		GL11.glVertex3f(corners[3].x, corners[3].y, corners[3].z);
 		
 		//Face 2
-		GL11.glColor3f(0.0f, 1.0f, 0.0f);
+		GL11.glColor3f(r,g,b);
 		GL11.glVertex3f(corners[0].x, corners[0].y, corners[0].z);
 		GL11.glVertex3f(corners[1].x, corners[1].y, corners[1].z);
 		GL11.glVertex3f(corners[5].x, corners[5].y, corners[5].z);
 		GL11.glVertex3f(corners[4].x, corners[4].y, corners[4].z);
 		
 		//Face 3
-		GL11.glColor3f(0.0f, 0.0f, 1.0f);
+		GL11.glColor3f(r,g,b);
 		GL11.glVertex3f(corners[5].x, corners[5].y, corners[5].z);
 		GL11.glVertex3f(corners[6].x, corners[6].y, corners[6].z);
 		GL11.glVertex3f(corners[7].x, corners[7].y, corners[7].z);
 		GL11.glVertex3f(corners[4].x, corners[4].y, corners[4].z);
 		
 		//Face 4
-		GL11.glColor3f(0.3f, 0.5f, 0.8f);
+		GL11.glColor3f(r,g,b);
 		GL11.glVertex3f(corners[0].x, corners[0].y, corners[0].z);
 		GL11.glVertex3f(corners[4].x, corners[4].y, corners[4].z);
 		GL11.glVertex3f(corners[7].x, corners[7].y, corners[7].z);
 		GL11.glVertex3f(corners[3].x, corners[3].y, corners[3].z);
 		
 		//Face 5
-		GL11.glColor3f(0.1f, 0.8f, 0.3f);
+		GL11.glColor3f(r,g,b);
 		GL11.glVertex3f(corners[1].x, corners[1].y, corners[1].z);
 		GL11.glVertex3f(corners[5].x, corners[5].y, corners[5].z);
 		GL11.glVertex3f(corners[6].x, corners[6].y, corners[6].z);
