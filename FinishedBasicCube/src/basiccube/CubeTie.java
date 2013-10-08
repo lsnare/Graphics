@@ -236,6 +236,13 @@ public class CubeTie {
 		GL11.glVertex3f(corners[6].x, corners[6].y, corners[6].z);
 		GL11.glVertex3f(corners[2].x, corners[2].y, corners[2].z);
 		
+		//Face 6
+		GL11.glColor3f(r,g,b);
+		GL11.glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+		GL11.glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+		GL11.glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+		GL11.glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+		
 		GL11.glEnd();
 		
 	}
