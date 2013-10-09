@@ -13,5 +13,6 @@
 			<attribute name="javadoc_location" value="file:/usr/local/lwjgl-2.9.0/javadoc/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

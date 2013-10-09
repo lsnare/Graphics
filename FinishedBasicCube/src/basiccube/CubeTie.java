@@ -160,41 +160,45 @@ public class CubeTie {
 		//GL11.glCullFace(GL11.GL_FRONT);
 		//GL11.glEnable(GL11.GL_CULL_FACE);
 		
-		GL11.glRotatef(rotation, 1f, 0.5f, 1f);
-		GL11.glRotatef(65+rotation,0f,1f,0);
+		GL11.glRotatef(rotation,1f,0f,0);
+		GL11.glRotatef(rotation,0f,1f,0);
+		GL11.glRotatef(rotation,0f,0f,1f);
 		
-		
+		float color = 0.5f;
 		for(int i = 0; i < 3; i++){
 		//Draw the square
+			
 			GL11.glPushMatrix();
 			GL11.glTranslatef(i, 0.0f, 0f);
-			renderCube(i,0,0);
+			renderCube(color,0,0);
 			GL11.glPopMatrix();
 			
+			if(i>0){
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0, 0.0f, i);
-			renderCube(0,i,0);
+			renderCube(0,color,0);
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
-			GL11.glTranslatef(2, i, 0f);
-			renderCube(0,0,i);
+			GL11.glTranslatef(2f, i, 0f);
+			renderCube(0,0,color);
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0, i, 2f);
-			renderCube(i,0,0);
+			renderCube(color,0,0);
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
 			GL11.glTranslatef(2, 2, i);
-			renderCube(0,i,0);
+			renderCube(0,color,0);
 			GL11.glPopMatrix();
 			
 			GL11.glPushMatrix();
 			GL11.glTranslatef(i, 2, 2);
-			renderCube(0,0,i);
+			renderCube(0,0,color);
 			GL11.glPopMatrix();
+			}
 		}
 		
 	}
