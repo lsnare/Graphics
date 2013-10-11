@@ -17,13 +17,6 @@ public class Turtle {
 	@SuppressWarnings("unused")
 	private Location loc;
 	
-
-	public Vector3f red = new Vector3f(1.0f,0.0f,0.0f);
-	public Vector3f blue = new Vector3f(0.0f,1.0f,0.0f);
-	public Vector3f green = new Vector3f(0.0f,0.0f,1.0f);
-	
-	public Vector3f[] baseColor = {red,green,blue};
-	
 	//tiny class for location of turtle
 	private class Location{
 		float x,y;
@@ -103,7 +96,6 @@ public class Turtle {
 			
 			int i = 0;
 			for (Location ll : path){
-				GL11.glColor3f(baseColor[i%3].x, baseColor[i%3].y, baseColor[i%3].z);
 				GL11.glVertex2f(ll.x, ll.y);
 				i++;
 			}

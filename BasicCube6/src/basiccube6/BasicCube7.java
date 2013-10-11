@@ -3,6 +3,8 @@ package basiccube6;
 import java.nio.FloatBuffer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.Composite;
@@ -13,7 +15,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
@@ -142,9 +143,6 @@ public class BasicCube7 {
 	public void update(int delta){
 		//Computer new coordinate for the object based on time elapsed
 		rotation += 0.015f * delta;	
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) eyez -= 0.035f;
-		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) eyez += 0.035f;
 
 		updateFPS();
 	}
@@ -159,7 +157,7 @@ public class BasicCube7 {
 		//call timing inits
 		getDelta();
 		lastFPS = getTime();
-		
+		initGL();
 		//start a thread that loops and handles the generation
 		final Runnable frameHandler = new Runnable(){
 
@@ -198,6 +196,18 @@ public class BasicCube7 {
 			}
 		});//end listener
 		
+		canvas.addListener(SWT.RESIZE, new Listener(){
+			public void handleEvent(Event event){
+				try{
+					GLContext.useContext(canvas);
+				}catch (LWJGLException e){
+					e.printStackTrace();
+				}
+				//per drawing
+				resetGL();
+			}
+		});
+		
 		display.asyncExec(frameHandler);
 		
 		while(!shell.isDisposed()){
@@ -208,8 +218,61 @@ public class BasicCube7 {
 	}
 	
 	private void initSWT() {
-		// TODO Auto-generated method stub
+		shell = new Shell(display);
+		shell.setLayout(new FillLayout());
+		comp = new Composite(shell, SWT.BORDER);
+		comp.setLayout(new FillLayout());
 		
+		//GL data
+		data.depthSize = 4;
+		data.doubleBuffer = true;
+		
+		//canvas
+		canvas = new GLCanvas(comp, SWT.NONE, data);
+		
+		shell.addListener(SWT.KeyDown, new Listener(){
+			public void handleEvent(Event e){
+				onKbdEvent(e);
+			}
+		});
+		
+		shell.setText("SWT/LWJGL Basic Cube");
+		shell.setSize(WIDTH, HEIGHT);
+		shell.open();
+		
+	}
+
+	public void resetGL(){
+		Rectangle bounds = canvas.getBounds();
+		GL11.glViewport(0, 0, bounds.width, bounds.height);
+		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		
+		float aspectRatio = (float) bounds.width / (float) bounds.height;
+		
+		GLU.gluPerspective(60f, aspectRatio, znear, zfar);
+		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
+		
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
+	}
+	
+	protected void onKbdEvent(Event e) {
+		
+		int key = e.keyCode;
+		
+		switch(key){
+		case SWT.ARROW_UP:
+			eyez -= 0.01f;
+			break;
+		case SWT.ARROW_DOWN:
+			eyez += 0.01f;
+			break;
+		case SWT.ESC:
+			shell.dispose();
+			break;
+		}
 	}
 
 	private void renderGL() {
@@ -230,7 +293,7 @@ public class BasicCube7 {
 		GL11.glRotatef(rotation, 0, 0, 1);
 		renderCube();
 		GL11.glColor3f(0.7f, 0.4f, 0.5f);
-		sphere.draw(.6f, 120, 120);
+		//sphere.draw(.6f, 120, 120);
 		GL11.glPopMatrix();
 		
 	}
@@ -279,13 +342,7 @@ public class BasicCube7 {
 	}
 	
 	public void initGL(){
-		try{
-			Keyboard.create();
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
 		
-		Keyboard.enableRepeatEvents(true);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		

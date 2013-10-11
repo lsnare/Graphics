@@ -40,7 +40,7 @@ public class Dragon {
 	
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
-		Dragon dragon = new Dragon(turtle, 2);
+		Dragon dragon = new Dragon(turtle, 5);
 		turtle.init(350, 230, 0);
 		turtle.pen(true);
 		
