@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -25,6 +27,8 @@ import org.lwjgl.util.vector.Vector4f;
 //integrate with SWT
 public class BasicCube7 {
 
+	boolean animate = true;
+	
 	/*
 	 * Window manager
 	 */
@@ -142,7 +146,9 @@ public class BasicCube7 {
 	
 	public void update(int delta){
 		//Computer new coordinate for the object based on time elapsed
-		rotation += 0.015f * delta;	
+		if(animate)
+			rotation += 0.015f * delta;	
+	
 
 		updateFPS();
 	}
@@ -151,13 +157,16 @@ public class BasicCube7 {
 		//initialize window manager
 		initSWT();
 		
+		//initialize GL
+		initGL();
+		
 		//setup cube
 		initCube();
 		
 		//call timing inits
 		getDelta();
 		lastFPS = getTime();
-		initGL();
+		
 		//start a thread that loops and handles the generation
 		final Runnable frameHandler = new Runnable(){
 
@@ -217,6 +226,41 @@ public class BasicCube7 {
 		display.dispose();
 	}
 	
+	public Menu initMenu(){
+		Menu menu = new Menu(shell, SWT.POP_UP);
+		
+		//add items to the menu
+		
+		//create an item
+		final MenuItem item0 = new MenuItem(menu, SWT.PUSH);
+		//set its text dependent on animation
+		item0.setText(animate ? "Stop" : "Animate");
+		item0.addListener(SWT.Selection, new Listener(){
+
+			@Override
+			public void handleEvent(Event event) {
+				// TODO Auto-generated method stub
+				animate = !animate;
+				item0.setText(animate ? "Stop" : "Animate");
+			}
+		});
+		
+		MenuItem item1 = new MenuItem(menu, SWT.PUSH);
+		item1.setText("Exit");
+		item1.addListener(SWT.Selection, new Listener(){
+
+			@Override
+			public void handleEvent(Event event) {
+				// TODO Auto-generated method stub
+				shell.dispose();
+			}
+			
+		});
+		
+		return menu;
+	}
+	
+	
 	private void initSWT() {
 		shell = new Shell(display);
 		shell.setLayout(new FillLayout());
@@ -224,18 +268,31 @@ public class BasicCube7 {
 		comp.setLayout(new FillLayout());
 		
 		//GL data
-		data.depthSize = 4;
+		data.depthSize = 1;
 		data.doubleBuffer = true;
 		
 		//canvas
 		canvas = new GLCanvas(comp, SWT.NONE, data);
-		
+		canvas.setCurrent();
+		canvas.setMenu(initMenu());
 		shell.addListener(SWT.KeyDown, new Listener(){
 			public void handleEvent(Event e){
 				onKbdEvent(e);
 			}
 		});
 		
+		shell.addListener(SWT.MouseWheel, new Listener(){
+
+			@Override
+			public void handleEvent(Event event) {
+				// TODO Auto-generated method stub
+				if (event.count > 0)
+					eyez -= 0.05f;
+				else
+					eyez += 0.05f;
+			}
+			
+		});
 		shell.setText("SWT/LWJGL Basic Cube");
 		shell.setSize(WIDTH, HEIGHT);
 		shell.open();
@@ -281,10 +338,12 @@ public class BasicCube7 {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		
-		float aspectRatio = WIDTH/(float)HEIGHT;
+		Rectangle bounds = canvas.getBounds();
+		GL11.glViewport(0, 0, bounds.width, bounds.height);
+
+		float aspectRatio = (float) bounds.width/(float)bounds.height;
 		GLU.gluPerspective(60f, aspectRatio, 0.1f, 15f);
 		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
-		GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
@@ -293,7 +352,7 @@ public class BasicCube7 {
 		GL11.glRotatef(rotation, 0, 0, 1);
 		renderCube();
 		GL11.glColor3f(0.7f, 0.4f, 0.5f);
-		//sphere.draw(.6f, 120, 120);
+		sphere.draw(.6f, 120, 120);
 		GL11.glPopMatrix();
 		
 	}
@@ -342,6 +401,15 @@ public class BasicCube7 {
 	}
 	
 	public void initGL(){
+		
+		canvas.setCurrent();
+		
+		try {
+			GLContext.useContext(canvas);
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();

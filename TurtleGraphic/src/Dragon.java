@@ -38,17 +38,35 @@ public class Dragon {
 		}
 	}
 	
-	public void koch(int n){
+	public void koch(int n, int angle){
 		if (n==0){
 			turtle.forward(distance);
 		} else {
-			koch(n-1);
-			turtle.left(60);
-			koch(n-1);
-			turtle.left(-120);
-			koch(n-1);
-			turtle.left(60);
-			koch(n-1);
+			for(int i = 0; i < n; i++){
+			koch(n-1,angle);
+			turtle.left(angle);
+			koch(n-1,angle);
+			turtle.left(-(angle*2));
+			koch(n-1,angle);
+			turtle.left(angle);
+			koch(n-1,angle);
+			}
+		}
+		
+	}
+	
+	public void wada(int n){
+		if (n==0){
+			turtle.forward(distance);
+			n++;
+		} else {
+			wada(n-1);
+			turtle.left(80);
+			wada(n-1);
+			turtle.left(-160);
+			wada(n-1);
+			turtle.left(80);
+			wada(n-1);
 		}
 		
 	}
@@ -60,23 +78,25 @@ public class Dragon {
 		turtle.pen(true);
 		
 		//dragon.dragon(16);
-		dragon.koch(4);
+		dragon.koch(3,90);
+		turtle.left(90);
+		dragon.koch(3,90);
+		turtle.left(90);
+		dragon.koch(3,90);
+		turtle.left(90);
+		dragon.koch(3,90);
+		/*dragon.koch(4);
 		turtle.left(-120);
 		dragon.koch(4);
 		turtle.left(-120);
 		dragon.koch(4);
+		*/
 		
-		dragon.koch(4);
-		turtle.left(-120);
-		dragon.koch(4);
-		turtle.left(-120);
-		dragon.koch(4);
-		
-		dragon.koch(4);
-		turtle.left(-120);
-		dragon.koch(4);
-		turtle.left(-120);
-		dragon.koch(4);
+		/*dragon.wada(5);
+		turtle.left(-160);
+		dragon.wada(5);
+		turtle.left(-160);
+		*/
 		turtle.pen(false);
 		turtle.show();
 		
