@@ -38,7 +38,7 @@ public class Dragon {
 		}
 	}
 	
-	public void koch(int n, int angle){
+	public void cathedral(int n, int angle){
 		if (n==0){
 			turtle.forward(distance);
 		} else {
@@ -51,6 +51,40 @@ public class Dragon {
 			turtle.left(angle);
 			koch(n-1,angle);
 			}
+		}
+		
+	}
+	
+	public void koch(int n, int angle){
+		if (n==0){
+			turtle.forward(distance);
+		} else {
+			
+			koch(n-1,angle);
+			turtle.left(angle);
+			koch(n-1,angle);
+			turtle.left(-(angle*2));
+			koch(n-1,angle);
+			turtle.left(angle);
+			koch(n-1,angle);
+			
+		}
+		
+	}
+	
+	public void koch2(int n, int angle){
+		if (n==0){
+			turtle.forward(distance);
+		} else {
+			
+			koch(n-1,angle);
+			turtle.right(angle);
+			koch(n-1,angle);
+			turtle.left(-(angle*2));
+			koch(n-1,angle);
+			turtle.left(angle);
+			koch(n-1,angle);
+			
 		}
 		
 	}
@@ -74,17 +108,12 @@ public class Dragon {
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(500, 400, 0);
+		turtle.init(200, 400, 0);
 		turtle.pen(true);
 		
 		//dragon.dragon(16);
-		dragon.koch(3,90);
-		turtle.left(90);
-		dragon.koch(3,90);
-		turtle.left(90);
-		dragon.koch(3,90);
-		turtle.left(90);
-		dragon.koch(3,90);
+		dragon.koch2(5,60);
+		
 		/*dragon.koch(4);
 		turtle.left(-120);
 		dragon.koch(4);
