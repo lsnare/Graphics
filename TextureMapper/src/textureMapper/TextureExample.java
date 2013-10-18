@@ -1,3 +1,4 @@
+package textureMapper;
 import java.io.IOException;
 
 import org.lwjgl.LWJGLException;

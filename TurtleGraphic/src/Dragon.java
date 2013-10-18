@@ -105,6 +105,17 @@ public class Dragon {
 		
 	}
 	
+	public void tree(int branchlen){
+		if(branchlen>5){
+			turtle.forward(distance);
+			turtle.right(20);
+			tree(branchlen-1);
+			turtle.left(20);
+			turtle.forward(distance);
+			tree(branchlen-15);
+		}
+	}
+	
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		Dragon dragon = new Dragon(turtle, 5);
@@ -112,8 +123,8 @@ public class Dragon {
 		turtle.pen(true);
 		
 		//dragon.dragon(16);
-		dragon.koch2(5,60);
-		
+		//dragon.koch2(5,60);
+		dragon.tree(50);
 		/*dragon.koch(4);
 		turtle.left(-120);
 		dragon.koch(4);
