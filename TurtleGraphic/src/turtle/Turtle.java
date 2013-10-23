@@ -1,3 +1,4 @@
+package turtle;
 import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
@@ -15,10 +16,10 @@ public class Turtle {
 	@SuppressWarnings("unused")
 	private boolean ink;
 	@SuppressWarnings("unused")
-	private Location loc;
+	public Location loc;
 	
 	//tiny class for location of turtle
-	private class Location{
+	class Location{
 		float x,y;
 		Location(float x, float y){
 			this.x = x;
@@ -26,7 +27,7 @@ public class Turtle {
 		}
 	}
 	
-	private ArrayList<Location> path = new ArrayList<Location>();
+	public ArrayList<Location> path = new ArrayList<Location>();
 	
 	
 	public Turtle(){
@@ -49,6 +50,18 @@ public class Turtle {
 		}
 		loc.x = loc.x + (float) (distance * Math.cos(theta * PI / 180));
 		loc.y = loc.y + (float) (distance * Math.sin(theta * PI / 180));
+		if(ink){
+			path.add(new Location(loc.x, loc.y));
+		}
+	}
+	
+	public void backward(Location old){
+		//create new path so it is not overwritten
+		if (ink){
+			path.add(new Location(loc.x, loc.y));
+		}
+		loc.x = old.x;
+		loc.y = old.y;
 		if(ink){
 			path.add(new Location(loc.x, loc.y));
 		}

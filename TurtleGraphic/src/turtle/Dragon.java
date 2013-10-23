@@ -1,11 +1,15 @@
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
+package turtle;
+import java.util.Stack;
+
+import turtle.Turtle.Location;
+
 
 
 public class Dragon {
 
 	private Turtle turtle;
 	private int distance;
+	private Stack<Location> stack = new Stack<Location>();
 	
 	public Dragon(Turtle turtle){
 		this.turtle = turtle;
@@ -105,14 +109,29 @@ public class Dragon {
 		
 	}
 	
-	public void tree(int branchlen){
-		if(branchlen>5){
-			turtle.forward(distance);
-			turtle.right(20);
-			tree(branchlen-1);
-			turtle.left(20);
-			turtle.forward(distance);
-			tree(branchlen-15);
+	public boolean[] thuemorse(boolean[] inseq){
+		
+		boolean[] sequence = new boolean[2*inseq.length];
+		
+		for(int i = 0; i < inseq.length; i++){
+			sequence[i] = inseq[i];
+		}
+		
+		int index = inseq.length;
+		for(int j = 0; j < inseq.length; j++){
+			sequence[index] = !inseq[j];
+			index++;
+		}
+		
+		return sequence;
+	}
+	
+	public void thueTree(boolean[] seq, int distance, int angle){
+		for(int i = 0; i < seq.length; i++){
+			if(seq[i])
+				turtle.forward(distance);
+			else
+				turtle.left(angle);
 		}
 	}
 	
@@ -122,21 +141,34 @@ public class Dragon {
 		turtle.init(200, 400, 0);
 		turtle.pen(true);
 		
-		//dragon.dragon(16);
+		//dragon.dragon(12);
 		//dragon.koch2(5,60);
-		dragon.tree(50);
-		/*dragon.koch(4);
-		turtle.left(-120);
-		dragon.koch(4);
-		turtle.left(-120);
-		dragon.koch(4);
-		*/
+		//dragon.tree(50);
 		
-		/*dragon.wada(5);
-		turtle.left(-160);
-		dragon.wada(5);
-		turtle.left(-160);
-		*/
+		
+		//////////////////////
+		//  Koch Snowflake  //
+		//////////////////////
+		
+		/*dragon.koch(4,60);
+		turtle.left(-120);
+		dragon.koch(4,60);
+		turtle.left(-120);
+		dragon.koch(4,60);*/
+		
+		//dragon.cathedral(4, 90);
+		
+		
+		boolean[] seq = {false};
+		for(int i = 0; i < 15; i++){
+			seq=dragon.thuemorse(seq);
+		}
+		
+		/////////////////////////////////////////////////////
+		// Koch Curve generated with a Thue-Morse Sequence //
+		/////////////////////////////////////////////////////
+		//dragon.thueTree(seq, 3, 60);
+		
 		turtle.pen(false);
 		turtle.show();
 		

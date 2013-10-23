@@ -1,3 +1,4 @@
+package turtle;
 import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
@@ -6,7 +7,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 
-public class CopyOfTurtle {
+public class TurtleExp {
 
 	public static final double PI = Math.PI;
 	@SuppressWarnings("unused")
@@ -28,7 +29,7 @@ public class CopyOfTurtle {
 	private ArrayList<Location> path = new ArrayList<Location>();
 	
 	
-	public CopyOfTurtle(){
+	public TurtleExp(){
 		loc = new Location(0,0);
 		theta = 90;
 		ink = false;
@@ -90,7 +91,7 @@ public class CopyOfTurtle {
 		
 		while(!Display.isCloseRequested()){
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glColor3f(0.5f, 0.0f, 0.0f);
+			GL11.glColor3f(0.0f, 0.5f, 0.5f);
 			GL11.glBegin(GL11.GL_LINES);
 			
 			for (Location ll : path){
@@ -132,15 +133,32 @@ public class CopyOfTurtle {
 			left(135);
 			forward(1);
 			right(angle);
-			size+=1;
+			size+=5;//1,5
+		}while(size<max);
+		pen(false);
+	}
+	
+	public void patternthree(int size, double angle, int max){
+		pen(true);
+		do{
+			
+			forward(size);
+			left(90);
+			forward(size);
+			left(90);
+			forward(size);
+			left(85);
+			forward(size);
+			
+			size+=5;//1,5
 		}while(size<max);
 		pen(false);
 	}
 	
 	public static void main(String[] args){
-		CopyOfTurtle turtle = new CopyOfTurtle();
+		TurtleExp turtle = new TurtleExp();
 		turtle.init(370,310, 0);
-		turtle.patterntwo(100, 90, 500);
+		turtle.patternthree(100, 80, 150);//90 with size+=1, 80 with size+=5
 		turtle.show();
 	}
 	
