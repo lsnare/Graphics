@@ -41,7 +41,7 @@ public class Sprite {
 	Display display = new Display(); //SWT display
 	Shell shell; 
 	
-	float deltaS = 0.90f;
+	float deltaS = 0.098f;
 	
 	Composite comp;
 	GLData data = new GLData();
@@ -52,7 +52,7 @@ public class Sprite {
 	long lastFrame;
 	
 	int fps;
-	
+	float foy=50f;
 	long lastFPS;
 	
 	int WIDTH = 1024;
@@ -69,7 +69,7 @@ public class Sprite {
 	float rotation = 20.0f;
 	
 	float eyex = 0, eyey = 0, eyez = 0.05f;
-	float znear= 0.1f, zfar = 1f;
+	float znear= .005f, zfar = 1f;
 	
 	public long getTime(){
 		return(Sys.getTime() * 2000 / Sys.getTimerResolution());
@@ -103,7 +103,7 @@ public class Sprite {
 			animIndex++;
 			animIndex %= 10;
 			cycleTime = 0;
-		}
+		}	GL11.glColor3f(0.7f, 0.4f, 0.5f);
 		updateFPS();
 	}
 	
@@ -224,7 +224,7 @@ public class Sprite {
 		
 		//canvas
 		canvas = new GLCanvas(comp, SWT.NONE, data);
-		canvas.setCurrent();
+		canvas.setCurrent();	
 		canvas.setMenu(initMenu());
 		shell.addListener(SWT.KeyDown, new Listener(){
 			public void handleEvent(Event e){
@@ -270,7 +270,7 @@ public class Sprite {
 		
 		float aspectRatio = (float) bounds.width / (float) bounds.height;
 		
-		GLU.gluPerspective(60f, aspectRatio, znear, zfar);
+		GLU.gluPerspective(foy, aspectRatio, znear, zfar);
 		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -297,6 +297,7 @@ public class Sprite {
 	private void renderGL() {
 		
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		
@@ -304,14 +305,13 @@ public class Sprite {
 		GL11.glViewport(0, 0, bounds.width, bounds.height);
 
 		float aspectRatio = (float) bounds.width/(float)bounds.height;
-		GLU.gluPerspective(60f, aspectRatio, 0.1f, 15f);
-		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
+		GLU.gluPerspective(foy, aspectRatio, znear, zfar);
+		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);	GL11.glColor3f(0.7f, 0.4f, 0.5f);
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
 		renderSprite();
-		GL11.glColor3f(0.7f, 0.4f, 0.5f);
-		sphere.draw(.6f, 120, 120);
+		
 		GL11.glPopMatrix();
 		
 	}
@@ -326,7 +326,7 @@ public class Sprite {
         lightPosition.put(-1f).put(1f).put(0.5f).put(0f).flip();
 
         whiteLight = BufferUtils.createFloatBuffer(4);
-        whiteLight.put(0.5f).put(0.5f).put(0.5f).put(1.0f).flip();
+        whiteLight.put(2f).put(2f).put(2f).put(1.0f).flip();
         
         lModeAmbient = BufferUtils.createFloatBuffer(4);
         lModeAmbient.put(0.1f).put(0.1f).put(0.1f).put(1f).flip();
@@ -353,9 +353,9 @@ public class Sprite {
 		
 			GL11.glTexCoord2f(deltaS * animIndex, 0.6f);
 			GL11.glVertex3f(-0.005f, -0.005f, 0);
-			GL11.glTexCoord2f(deltaS * 1+animIndex, 0.6f);
+			GL11.glTexCoord2f(deltaS * (1+animIndex), 0.6f);
 			GL11.glVertex3f( 0.005f, -0.005f, 0);
-			GL11.glTexCoord2f(deltaS * 1+animIndex, 0f);
+			GL11.glTexCoord2f(deltaS * (1+animIndex), 0f);
 			GL11.glVertex3f( 0.005f,  0.005f, 0);
 			GL11.glTexCoord2f(deltaS * animIndex, 0f);
 			GL11.glVertex3f(-0.005f,  0.005f, 0);
@@ -377,8 +377,12 @@ public class Sprite {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		
-		float aspect = WIDTH / (float) HEIGHT;
-		GLU.gluPerspective(60f, aspect, znear, zfar);
+		Rectangle bounds = canvas.getBounds();
+		GL11.glViewport(0, 0, bounds.width, bounds.height);
+		
+		float aspect = bounds.width/bounds.height;
+		GLU.gluPerspective(foy, aspect, znear, zfar);
+		
 		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		

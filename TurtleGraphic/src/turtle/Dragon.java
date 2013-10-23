@@ -135,14 +135,46 @@ public class Dragon {
 		}
 	}
 	
+	//generates an oscillation pattern at 90 degrees
+	public void thueTree2(boolean[] seq, int distance, int angle){
+		for(int i = 0; i < seq.length; i++){
+			if(seq[i])
+				turtle.right(angle);
+			else
+				turtle.left(angle);
+			turtle.forward(distance);
+		}
+	}
+	
+	//generates an interesting Koch curve at 60 degrees
+	public void thueTree3(boolean[] seq, int distance, int angle){
+		for(int i = 0; i < seq.length; i++){
+			if(seq[i])
+				turtle.left(-2*angle);
+			else
+				turtle.left(angle);
+			turtle.forward(distance);
+		}
+	}
+
+	public void thueTree4(boolean[] seq, int distance, int angle){
+		for(int i = 0; i < seq.length; i++){
+			if(seq[i])
+				thueTree(seq, distance, angle);
+			else
+				turtle.left(angle);
+			turtle.forward(distance);
+		}
+	}
+	
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(200, 400, 0);
+		turtle.init(0, 0, 0);
 		turtle.pen(true);
 		
 		//dragon.dragon(12);
-		//dragon.koch2(5,60);
+		//dragon.koch(6,60);
 		//dragon.tree(50);
 		
 		
@@ -160,14 +192,14 @@ public class Dragon {
 		
 		
 		boolean[] seq = {false};
-		for(int i = 0; i < 15; i++){
+		for(int i = 0; i < 13; i++){
 			seq=dragon.thuemorse(seq);
 		}
 		
 		/////////////////////////////////////////////////////
 		// Koch Curve generated with a Thue-Morse Sequence //
 		/////////////////////////////////////////////////////
-		//dragon.thueTree(seq, 3, 60);
+		dragon.thueTree(seq, 5, 60);
 		
 		turtle.pen(false);
 		turtle.show();
