@@ -93,19 +93,17 @@ public class Dragon {
 		
 	}
 	
-	public void wada(int n){
-		if (n==0){
-			turtle.forward(distance);
-			n++;
-		} else {
-			wada(n-1);
-			turtle.left(80);
-			wada(n-1);
-			turtle.left(-160);
-			wada(n-1);
-			turtle.left(80);
-			wada(n-1);
+	//fractal wiki
+	public void tree(int n){
+		for(int i = 0; i < 10; i++){
+		stack.push(turtle.loc);
+		turtle.left(60);
+		turtle.forward(10);
+		turtle.loc=stack.pop();
+		turtle.right(60);
+		turtle.forward(10);
 		}
+		
 		
 	}
 	
@@ -170,7 +168,7 @@ public class Dragon {
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(0, 0, 0);
+		turtle.init(200, 200, 0);
 		turtle.pen(true);
 		
 		//dragon.dragon(12);
@@ -199,7 +197,8 @@ public class Dragon {
 		/////////////////////////////////////////////////////
 		// Koch Curve generated with a Thue-Morse Sequence //
 		/////////////////////////////////////////////////////
-		dragon.thueTree(seq, 5, 60);
+		//dragon.thueTree(seq, 5, 60);
+		dragon.tree(8);
 		
 		turtle.pen(false);
 		turtle.show();
