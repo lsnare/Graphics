@@ -25,6 +25,9 @@ public abstract class SkelGL {
 	GLData data = new GLData();
 	GLCanvas canvas;//child of display used for drawing
 
+	int WIDTH = 1024;
+	int HEIGHT = 760;
+	
 	long lastFrame;
 	
 	int fps;
@@ -57,11 +60,6 @@ public abstract class SkelGL {
 			lastFPS += 1000;
 		}
 		fps++;
-	}
-	
-	public void update(int delta){
-	
-		updateFPS();
 	}
 	
 	public void start(){
@@ -171,58 +169,12 @@ public abstract class SkelGL {
 		shell.open();
 		
 	}
-	
-public void initGL(){
-		
-		canvas.setCurrent();
-		
-		try {
-			GLContext.useContext(canvas);
-		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		
-		float aspect = WIDTH / (float) HEIGHT;
-		GLU.gluPerspective(60f, aspect, znear, zfar);
-		GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
-		GL11.glViewport(0, 0, WIDTH, HEIGHT);
-		
-		GL11.glEnable(GL11.GL_NORMALIZE);
-		GL11.glClearColor(0, 0, 0, 0);
 
-		initLightArrays();
-		initTextures();
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-	}
-
-private void renderGL() {
-	
-	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-	GL11.glMatrixMode(GL11.GL_PROJECTION);
-	GL11.glLoadIdentity();
-	
-	Rectangle bounds = canvas.getBounds();
-	GL11.glViewport(0, 0, bounds.width, bounds.height);
-
-	float aspectRatio = (float) bounds.width/(float)bounds.height;
-	GLU.gluPerspective(60f, aspectRatio, 0.1f, 15f);
-	GLU.gluLookAt(eyex, eyey, eyez, 0, 0, 0, 0, 1, 0);
-	
-	GL11.glMatrixMode(GL11.GL_MODELVIEW);
-	GL11.glPushMatrix();
-	GL11.glRotatef(rotation, 1, 0, 0);
-	GL11.glRotatef(rotation, 0, 1, 0);
-	GL11.glRotatef(rotation, 0, 0, 1);
-	renderCube();
-	GL11.glColor3f(0.7f, 0.4f, 0.5f);
-	sphere.draw(.6f, 120, 120);
-	GL11.glPopMatrix();
-	
-}
+protected abstract void initGL();
+protected abstract void update(int delta);
+protected abstract void renderGL();
+protected abstract void resetGL();
+protected abstract void initTextures();
 	
 	
 }
