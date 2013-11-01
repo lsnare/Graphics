@@ -198,7 +198,7 @@ public class Dragon {
 		// Koch Curve generated with a Thue-Morse Sequence //
 		/////////////////////////////////////////////////////
 		//dragon.thueTree(seq, 5, 60);
-		dragon.tree(8);
+		//dragon.tree(8);
 		
 		turtle.pen(false);
 		turtle.show();
