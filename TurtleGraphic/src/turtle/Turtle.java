@@ -65,7 +65,7 @@ public class Turtle {
 		if(ink){
 			path.add(new Location(loc.x, loc.y));
 		}
-	}
+	} 
 	
 	public void right(double theta){
 		this.theta -= theta;
