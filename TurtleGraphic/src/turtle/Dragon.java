@@ -168,10 +168,10 @@ public class Dragon {
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(200, 200, 0);
+		turtle.init(400, 400, 0);
 		turtle.pen(true);
 		
-		//dragon.dragon(12);
+		dragon.dragon(12);
 		//dragon.koch(6,60);
 		//dragon.tree(50);
 		

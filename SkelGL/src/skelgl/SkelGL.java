@@ -125,6 +125,7 @@ public abstract class SkelGL {
 		});
 
 		canvas.addListener(SWT.Resize, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				// per drawing reset
 				resetGL();
@@ -165,6 +166,7 @@ public abstract class SkelGL {
 			System.exit(-1);
 		}
 		shell.addListener(SWT.KeyDown, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				onKbdEvent(e);
 			}

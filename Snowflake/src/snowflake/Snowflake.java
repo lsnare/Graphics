@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Snowflake extends SkelGL {
 
-	private int numTimesToSubdivide = 4;
+	private int numTimesToSubdivide = 5;
 	private int numFlakes = (int) Math.pow(4, numTimesToSubdivide);
 	private int numVertices = 3 * numFlakes;
 
