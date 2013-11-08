@@ -14,8 +14,20 @@ import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.util.vector.Vector2f;
+
+import textureMapper.TextureMapper;
 
 public abstract class SkelGL {
+	
+	TextureMapper tmap = null;
+	
+	Vector2f[] textBounds = {
+		new Vector2f(0.25f,0),
+		new Vector2f(0.75f,0),
+		new Vector2f(0.5f,0.5f)
+	};
+	
 	/* animation indicator for menu selector */
 	boolean animate = true;
 
@@ -193,19 +205,19 @@ public abstract class SkelGL {
 
 		switch (key) {
 		case SWT.ARROW_UP:
-			eyez -= 0.05f;
+			eyez -= 0.004f;
 			break;
 
 		case SWT.ARROW_DOWN:
-			eyez += 0.05f;
+			eyez += 0.004f;
 			break;
 
 		case SWT.ARROW_LEFT:
-			eyex -= 0.05f;
+			eyex -= 0.004f;
 			break;
 
 		case SWT.ARROW_RIGHT:
-			eyex += 0.05f;
+			eyex += 0.004f;
 			break;
 
 		case SWT.ESC:

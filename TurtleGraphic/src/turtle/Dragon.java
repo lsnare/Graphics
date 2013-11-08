@@ -230,30 +230,30 @@ public class Dragon {
 		Turtle turtle = new Turtle();
 		LSystem l = new LSystem();
 		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(300, 600, 0);
+		turtle.init(1500, 1000, 0);
 		turtle.pen(true);
 		
 		
 		ArrayList<Boolean> seq = new ArrayList<Boolean>();
 		seq.add(true);
-		for(int i = 0; i < 13; i++){
+		for(int i = 0; i < 17; i++){
 			seq=l.LSystemThueMorse(seq);
 		}
 		
 		/*ArrayList<String> seq = new ArrayList<String>();
 		seq.add("F");
-		for(int i = 0; i < 18; i++){
+		for(int i = 0; i < 16; i++){
 			seq=l.LSystemLevy(seq);
 		}*/
 		
 		/////////////////////////////////////////////////////
 		// Koch Curve generated with a Thue-Morse Sequence //
 		/////////////////////////////////////////////////////
-		dragon.thueTree(seq, 5, 60);
+		dragon.thueTree(seq, 2, 60);
 		//dragon.tree(8);
 		//dragon.algae(seq, 75, 60);
 		//dragon.sier(seq, 4, 60);
-		//dragon.levy(seq, 1, 45);
+		//dragon.levy(seq, 3, 45);
 		turtle.pen(false);
 		turtle.show();
 		

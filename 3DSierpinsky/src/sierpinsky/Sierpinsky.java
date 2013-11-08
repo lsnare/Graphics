@@ -13,7 +13,8 @@ import textureMapper.TextureMapper;
 
 public class Sierpinsky extends SkelGL{
 
-	private int numTimesToSubdivide = 7;
+	
+	private int numTimesToSubdivide = 5;
 	private int numTetra = (int) Math.pow(4.0, numTimesToSubdivide);
 	 
 	private int numTriangles = 4*numTetra;
@@ -127,9 +128,11 @@ public class Sierpinsky extends SkelGL{
 		Vector3f v = Vector3f.sub(c, b, null);
 		Vector3f n = Vector3f.cross(u, v, null);
 		
-		points[index] = a; normals[index] = n; colors[index] = palette[color]; index++;
-		points[index] = b; normals[index] = n; colors[index] = palette[color]; index++;
-		points[index] = c; normals[index] = n; colors[index] = palette[color]; index++;
+		points[index] = a; normals[index] = n; colors[index] = palette[color]; textures[index] = textureBounds[index%3]; index++;
+		points[index] = b; normals[index] = n; colors[index] = palette[color]; textures[index] = textureBounds[index%3]; index++;
+		points[index] = c; normals[index] = n; colors[index] = palette[color]; textures[index] = textureBounds[index%3]; index++;
+		
+		
 	}
 
 	private void initLightArrays() {
@@ -213,10 +216,12 @@ public class Sierpinsky extends SkelGL{
 	}
 
 	private void renderGasket() {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tmap.getTextureID("metal"));
 		GL11.glBegin(GL11.GL_TRIANGLES);
 		for(int i = 0; i < numVertices; i++){
+			GL11.glTexCoord2f(textures[i].x, textures[i].y);
 			GL11.glNormal3f(normals[i].x, normals[i].y, normals[i].z);
-			GL11.glColor3f(colors[i].x, colors[i].y, colors[i].z);
+			//GL11.glColor3f(colors[i].x, colors[i].y, colors[i].z);
 			GL11.glVertex3f(points[i].x, points[i].y, points[i].z);
 		}
 		GL11.glEnd();
@@ -225,7 +230,17 @@ public class Sierpinsky extends SkelGL{
 
 	@Override
 	protected void initTextures() {
-		// TODO Auto-generated method stub
+		
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		tmap = new TextureMapper();
+		tmap.createTexture("rock.jpg", "JPG", "rock");
+		tmap.createTexture("metal.jpg", "JPG", "metal");
+		
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		
 		
 	}
 	

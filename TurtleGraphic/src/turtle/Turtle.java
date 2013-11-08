@@ -88,7 +88,7 @@ public class Turtle {
 	public void show(){
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(1200,800));
+			Display.setDisplayMode(new DisplayMode(1700,1000));
 			Display.create();
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
@@ -103,8 +103,9 @@ public class Turtle {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
 		while(!Display.isCloseRequested()){
+			GL11.glClearColor(1, 1, 1, 0);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glColor3f(0.0f, 0.5f, 0.5f);
+			GL11.glColor3f(0.0f, 0.0f, 0.0f);
 			GL11.glBegin(GL11.GL_LINES);
 			
 			int i = 0;
@@ -191,7 +192,7 @@ public class Turtle {
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		turtle.init(370,310, 0);
-		turtle.pentogram(100, 80, 5000);//90 with size+=1, 80 with size+=5
+		turtle.pentogram(1, 80, 5000);//90 with size+=1, 80 with size+=5
 		//turtle.thetaMaze(10,  90, 1000, 2);
 		turtle.show();
 	}
