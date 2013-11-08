@@ -1,4 +1,5 @@
 package turtle;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import turtle.Turtle.Location;
@@ -107,26 +108,9 @@ public class Dragon {
 		
 	}
 	
-	public boolean[] thuemorse(boolean[] inseq){
-		
-		boolean[] sequence = new boolean[2*inseq.length];
-		
-		for(int i = 0; i < inseq.length; i++){
-			sequence[i] = inseq[i];
-		}
-		
-		int index = inseq.length;
-		for(int j = 0; j < inseq.length; j++){
-			sequence[index] = !inseq[j];
-			index++;
-		}
-		
-		return sequence;
-	}
-	
-	public void thueTree(boolean[] seq, int distance, int angle){
-		for(int i = 0; i < seq.length; i++){
-			if(seq[i])
+	public void thueTree(ArrayList<Boolean> seq, int distance, int angle){
+		for(int i = 0; i < seq.size(); i++){
+			if(seq.get(i))
 				turtle.forward(distance);
 			else
 				turtle.left(angle);
@@ -158,20 +142,52 @@ public class Dragon {
 	public void thueTree4(boolean[] seq, int distance, int angle){
 		for(int i = 0; i < seq.length; i++){
 			if(seq[i])
-				thueTree(seq, distance, angle);
-			else
+				//thueTree(seq, distance, angle);
+			//else
 				turtle.left(angle);
 			turtle.forward(distance);
 		}
 	}
 	
+	public void algae(ArrayList<Boolean> seq, int distance, int angle){
+		for(int i = 0; i < seq.size(); i++){
+			if(seq.get(i))
+				turtle.right(angle);
+			else
+				turtle.forward(distance);
+		}
+	}
+	
+	public void sier(ArrayList<String> seq, int distance, int angle){
+		for(int i = 0; i < seq.size(); i++){
+			if(seq.get(i).equals("A") || seq.get(i).equals("B")){
+				turtle.forward(distance);
+			}
+			else if (seq.get(i).equals("-")){
+				turtle.right(angle);
+			}
+			else{
+				turtle.left(angle);
+			}
+		}
+	}
+	
+	public void levy(ArrayList<String> seq, int distance, int angle){
+		for(int i = 0; i < seq.size(); i++){
+			if(seq.get(i).equals("F")){
+				turtle.forward(distance);
+			}
+			else if (seq.get(i).equals("+")){
+				turtle.right(angle);
+			}
+			else{
+				turtle.left(angle);
+			}
+		}
+	}
+	
 	public static void main(String[] args){
-		Turtle turtle = new Turtle();
-		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(400, 400, 0);
-		turtle.pen(true);
-		
-		dragon.dragon(12);
+		//dragon.dragon(12);
 		//dragon.koch(6,60);
 		//dragon.tree(50);
 		
@@ -189,17 +205,55 @@ public class Dragon {
 		//dragon.cathedral(4, 90);
 		
 		
-		boolean[] seq = {false};
-		for(int i = 0; i < 13; i++){
-			seq=dragon.thuemorse(seq);
+		
+		
+		/*ArrayList<Boolean> seq = new ArrayList<Boolean>();
+		seq.add(true);
+		for(int i = 0; i < 15; i++){
+			seq=dragon.algaeSeries(seq);
 		}
+		
+		for(int i = 0; i  <seq.size(); i++){
+			System.out.print(seq.get(i)+", ");
+		}*/
+		
+		/*ArrayList<String> seq = new ArrayList<String>();
+		seq.add("A");
+		for(int i = 0; i < 7; i++){
+			seq=dragon.LSystemSierpinski(seq);
+		}
+		
+		for(int i = 0; i < seq.size(); i++){
+			System.out.print(seq.get(i)+" ");
+		}*/
+		
+		Turtle turtle = new Turtle();
+		LSystem l = new LSystem();
+		Dragon dragon = new Dragon(turtle, 5);
+		turtle.init(300, 600, 0);
+		turtle.pen(true);
+		
+		
+		ArrayList<Boolean> seq = new ArrayList<Boolean>();
+		seq.add(true);
+		for(int i = 0; i < 13; i++){
+			seq=l.LSystemThueMorse(seq);
+		}
+		
+		/*ArrayList<String> seq = new ArrayList<String>();
+		seq.add("F");
+		for(int i = 0; i < 18; i++){
+			seq=l.LSystemLevy(seq);
+		}*/
 		
 		/////////////////////////////////////////////////////
 		// Koch Curve generated with a Thue-Morse Sequence //
 		/////////////////////////////////////////////////////
-		//dragon.thueTree(seq, 5, 60);
+		dragon.thueTree(seq, 5, 60);
 		//dragon.tree(8);
-		
+		//dragon.algae(seq, 75, 60);
+		//dragon.sier(seq, 4, 60);
+		//dragon.levy(seq, 1, 45);
 		turtle.pen(false);
 		turtle.show();
 		

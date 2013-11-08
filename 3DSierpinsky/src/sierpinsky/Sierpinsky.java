@@ -13,7 +13,7 @@ import textureMapper.TextureMapper;
 
 public class Sierpinsky extends SkelGL{
 
-	private int numTimesToSubdivide = 8;
+	private int numTimesToSubdivide = 7;
 	private int numTetra = (int) Math.pow(4.0, numTimesToSubdivide);
 	 
 	private int numTriangles = 4*numTetra;
