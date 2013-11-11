@@ -5,16 +5,19 @@ import java.nio.FloatBuffer;
 import org.eclipse.swt.graphics.Rectangle;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import textureMapper.TextureMapper;
 
-public class Sierpinsky extends SkelGL{
+public class Sierpinski2 extends SkelGL{
 
 	
-	private int numTimesToSubdivide = 5;
+	private int numTimesToSubdivide = 10;
 	private int numTetra = (int) Math.pow(4.0, numTimesToSubdivide);
 	 
 	private int numTriangles = 4*numTetra;
@@ -25,6 +28,8 @@ public class Sierpinsky extends SkelGL{
 	private Vector3f[] normals = new Vector3f[numVertices];
 	
 	private int index = 0;
+	
+	private int vboID, vaoID;
 	
 	private Vector3f[] vertices = {
 			new Vector3f(0,0,-1),
@@ -75,8 +80,11 @@ public class Sierpinsky extends SkelGL{
 		initTextures();
 		
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-	
+		GL11.glClearColor(0, 0.4f, 0.9f, 0);
+		GL11.glColor3f(1.0f, 0, 0);
+		
 		initGasket();
+		allocVAO();
 	}
 
 	private void initGasket() {
@@ -166,6 +174,33 @@ public class Sierpinsky extends SkelGL{
 		
 	}
 
+	public void allocVAO(){
+		//outside JVM
+		FloatBuffer vBuffer = BufferUtils.createFloatBuffer(3 * numVertices);
+		
+		for (int i = 0; i < numVertices; i++){
+			vBuffer.put(points[i].x).put(points[i].y).put(points[i].z);
+		}
+		vBuffer.flip();
+		
+		//Create a VAO
+		vaoID = GL30.glGenVertexArrays();
+		GL30.glBindVertexArray(vaoID);
+		
+		//Create VBO
+		vboID = GL15.glGenBuffers();
+		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vBuffer, GL15.GL_STATIC_DRAW);
+		GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
+		
+		//Put the VBO into the VAO
+		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		//unbinding
+		GL30.glBindVertexArray(0);
+	}
+	
 	@Override
 	protected void update(int delta) {
 		if(animate){
@@ -216,15 +251,15 @@ public class Sierpinsky extends SkelGL{
 	}
 
 	private void renderGasket() {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tmap.getTextureID("metal"));
-		GL11.glBegin(GL11.GL_TRIANGLES);
-		for(int i = 0; i < numVertices; i++){
-			GL11.glTexCoord2f(textures[i].x, textures[i].y);
-			GL11.glNormal3f(normals[i].x, normals[i].y, normals[i].z);
-			//GL11.glColor3f(colors[i].x, colors[i].y, colors[i].z);
-			GL11.glVertex3f(points[i].x, points[i].y, points[i].z);
-		}
-		GL11.glEnd();
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
+		GL20.glEnableVertexAttribArray(0);
+		
+		GL30.glBindVertexArray(vaoID);
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, numVertices);
+		GL30.glBindVertexArray(0);
+		
+		GL20.glDisableVertexAttribArray(0);
 		
 	}
 
@@ -245,7 +280,7 @@ public class Sierpinsky extends SkelGL{
 	}
 	
 	public static void main(String[] args){
-		Sierpinsky s = new Sierpinsky();
+		Sierpinski2 s = new Sierpinski2();
 		s.start();
 	}
 
