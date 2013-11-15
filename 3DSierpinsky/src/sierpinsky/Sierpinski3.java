@@ -14,10 +14,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 import textureMapper.TextureMapper;
 
-public class Sierpinski2 extends SkelGL{
+public class Sierpinski3 extends SkelGL{
 
+	//hardware independent implementation of C sizeof() functions
+	private int sizeOfInt = Integer.SIZE / Byte.SIZE;
+	private int sizeOfFloat = Float.SIZE / Byte.SIZE;
+	private int sizeOfDouble = Double.SIZE / Byte.SIZE;
 	
-	private int numTimesToSubdivide = 10;
+	private int numTimesToSubdivide = 4;
 	private int numTetra = (int) Math.pow(4.0, numTimesToSubdivide);
 	 
 	private int numTriangles = 4*numTetra;
@@ -29,7 +33,7 @@ public class Sierpinski2 extends SkelGL{
 	
 	private int index = 0;
 	
-	private int vboID, vaoID, cboID, tboID, nboID;
+	private int vboID;
 	
 	private Vector3f[] vertices = {
 			new Vector3f(0,0,-1),
@@ -84,7 +88,7 @@ public class Sierpinski2 extends SkelGL{
 		GL11.glColor3f(1.0f, 0, 0);
 		
 		initGasket();
-		allocVAO();
+		allocVBO();
 	}
 
 	private void initGasket() {
@@ -174,60 +178,56 @@ public class Sierpinski2 extends SkelGL{
 		
 	}
 
-	public void allocVAO(){
+	public void allocVBO(){
 		//outside JVM
-		FloatBuffer vBuffer = BufferUtils.createFloatBuffer(3 * numVertices);
-		FloatBuffer cBuffer = BufferUtils.createFloatBuffer(3 * numVertices);
-		FloatBuffer nBuffer = BufferUtils.createFloatBuffer(3 * numVertices);
-		FloatBuffer tBuffer = BufferUtils.createFloatBuffer(2 * numVertices);
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(3 * numVertices + 3 * numVertices + 
+				3 * numVertices + 2 * numVertices);
+		
+		
 		
 		for (int i = 0; i < numVertices; i++){
-			vBuffer.put(points[i].x).put(points[i].y).put(points[i].z);
-			cBuffer.put(colors[i].x).put(colors[i].y).put(colors[i].z);
-			nBuffer.put(normals[i].x).put(normals[i].y).put(normals[i].z);
-			tBuffer.put(textures[i].x).put(textures[i].y);
-			
+			buffer.put(points[i].x).put(points[i].y).put(points[i].z);
+			buffer.put(colors[i].x).put(colors[i].y).put(colors[i].z);
+			buffer.put(normals[i].x).put(normals[i].y).put(normals[i].z);
+			buffer.put(textures[i].x).put(textures[i].y);	
 		}
-		vBuffer.flip();
-		cBuffer.flip();
-		nBuffer.flip();
-		tBuffer.flip();
 		
-		//Create a VAO
-		vaoID = GL30.glGenVertexArrays();
-		GL30.glBindVertexArray(vaoID);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+		buffer.flip();
+		
 
+		GL30.glBindVertexArray(0);
+		
+		GL20.glDisableVertexAttribArray(0);
 		//Create VBO
 		vboID = GL15.glGenBuffers();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+		
+		int stride = 3 * sizeOfFloat + 3 * sizeOfFloat + 3 * sizeOfFloat + 2 * sizeOfFloat;
+				
+		//vertex buffer
+		int offset = 0;
 		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vaoID);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vBuffer, GL15.GL_STATIC_DRAW);
-		GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
+		GL11.glVertexPointer(3, GL11.GL_FLOAT, stride, offset);
 		
-		cboID = GL15.glGenBuffers();
+		//color buffer
+		offset += 3 * sizeOfFloat;
 		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, cboID);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, cBuffer, GL15.GL_STATIC_DRAW);
-		GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0);
+		GL11.glColorPointer(3, GL11.GL_FLOAT, stride, offset);
 		
-		nboID = GL15.glGenBuffers();
+		//normal buffer
+		offset += 3 * sizeOfFloat;
 		GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, nboID);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, nBuffer, GL15.GL_STATIC_DRAW);
-		GL11.glNormalPointer(GL11.GL_FLOAT, 0, 0);
+		GL11.glNormalPointer(GL11.GL_FLOAT, stride, offset);
 		
-		tboID = GL15.glGenBuffers();
+		//texture buffer
+		offset += 2 * sizeOfFloat;
 		GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tboID);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, tBuffer, GL15.GL_STATIC_DRAW);
-		GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0);
+		GL11.glTexCoordPointer(2, GL11.GL_FLOAT, stride, offset);
 		
-		//Put the VBO into the VAO
-		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		//unbinding
-		GL30.glBindVertexArray(0);
+		
 	}
 	
 	@Override
@@ -282,15 +282,10 @@ public class Sierpinski2 extends SkelGL{
 	private void renderGasket() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
-		GL20.glEnableVertexAttribArray(0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tmap.getTextureID("metal"));
-		GL30.glBindVertexArray(vaoID);
 		
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, numVertices);
 		
-		GL30.glBindVertexArray(0);
-		
-		GL20.glDisableVertexAttribArray(0);
 		
 	}
 
@@ -311,7 +306,7 @@ public class Sierpinski2 extends SkelGL{
 	}
 	
 	public static void main(String[] args){
-		Sierpinski2 s = new Sierpinski2();
+		Sierpinski3 s = new Sierpinski3();
 		s.start();
 	}
 
