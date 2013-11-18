@@ -21,10 +21,11 @@ public class AnimCube extends SkelGL{
 	private int sizeOfInt = Integer.SIZE / Byte.SIZE;
 	private int sizeOfFloat = Float.SIZE / Byte.SIZE;
 	private int sizeOfDouble = Double.SIZE / Byte.SIZE;
+	FloatBuffer buffer;
 	
 	private int numVertices = 36;
 	
-	private Vector3f[] points = new Vector3f[numVertices];
+	private Vector4f[] points = new Vector4f[numVertices];
 	private Vector3f[] colors = new Vector3f[numVertices];
 	private Vector3f[] normals = new Vector3f[numVertices];
 	
@@ -36,7 +37,9 @@ public class AnimCube extends SkelGL{
 			new Vector3f(1,0,0),
 			new Vector3f(0,1,0),
 			new Vector3f(0,0,1),
-			new Vector3f(1,1,0)
+			new Vector3f(1,0,1),
+			new Vector3f(1,1,0),
+			new Vector3f(1,1,1)
 	};
 	
 	Vector4f[] vertices = {
@@ -55,17 +58,23 @@ public class AnimCube extends SkelGL{
 	Vector2f[] textureBounds = {
 			//first triangle
 			new Vector2f(0,0),	
-			new Vector2f(1,0),	
-			new Vector2f(1,1),
+			new Vector2f(0.5f,0),	
+			new Vector2f(0.5f,0.5f),
 			//second triangle
 			new Vector2f(0,0),	
-			new Vector2f(1,1),
-			new Vector2f(0,1)
+			new Vector2f(0.5f,0.5f),
+			new Vector2f(0,0.5f)
 	};
 	
 	Vector2f[] textures = new Vector2f[numVertices]; 
 	
 	float rotation = 20.0f;
+	float increment = 0.02f;
+	int corner = 0;
+	int stretch = 10;
+	boolean dir = false;
+	boolean morph = false;
+	int count = 0;
 	
 	private FloatBuffer matSpecular;
 	private FloatBuffer lightPosition;
@@ -160,13 +169,13 @@ public void quad(int a, int b, int c, int d, int col){
 
 	public void allocVBO(){
 		//outside JVM
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(3 * numVertices + 3 * numVertices + 
+		buffer = BufferUtils.createFloatBuffer(4 * numVertices + 3 * numVertices + 
 				3 * numVertices + 2 * numVertices);
 		
 		
 		
 		for (int i = 0; i < numVertices; i++){
-			buffer.put(points[i].x).put(points[i].y).put(points[i].z);
+			buffer.put(points[i].x).put(points[i].y).put(points[i].z).put(points[i].w);
 			buffer.put(colors[i].x).put(colors[i].y).put(colors[i].z);
 			buffer.put(normals[i].x).put(normals[i].y).put(normals[i].z);
 			buffer.put(textures[i].x).put(textures[i].y);	
@@ -183,15 +192,15 @@ public void quad(int a, int b, int c, int d, int col){
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 		
-		int stride = 3 * sizeOfFloat + 3 * sizeOfFloat + 3 * sizeOfFloat + 2 * sizeOfFloat;
+		int stride = 4 * sizeOfFloat + 3 * sizeOfFloat + 3 * sizeOfFloat + 2 * sizeOfFloat;
 				
 		//vertex buffer
 		int offset = 0;
 		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		GL11.glVertexPointer(3, GL11.GL_FLOAT, stride, offset);
+		GL11.glVertexPointer(4, GL11.GL_FLOAT, stride, offset);
 		
 		//color buffer
-		offset += 3 * sizeOfFloat;
+		offset += 4 * sizeOfFloat;
 		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
 		GL11.glColorPointer(3, GL11.GL_FLOAT, stride, offset);
 		
@@ -201,7 +210,7 @@ public void quad(int a, int b, int c, int d, int col){
 		GL11.glNormalPointer(GL11.GL_FLOAT, stride, offset);
 		
 		//texture buffer
-		offset += 2 * sizeOfFloat;
+		offset += 3 * sizeOfFloat;
 		GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 		GL11.glTexCoordPointer(2, GL11.GL_FLOAT, stride, offset);
 		
@@ -212,9 +221,50 @@ public void quad(int a, int b, int c, int d, int col){
 	
 	@Override
 	protected void update(int delta) {
+		if(alive){
+			if(!morph){
+				morph = true;
+				corner = (int)(Math.random() * numVertices);
+				dir = true;
+			} else {
+				if (dir){
+					//interpolate outwards
+					points[corner].x += increment;
+					points[corner].y += increment;
+					points[corner].z += increment;
+					points[corner].w = 1;
+					count++;
+				}else {
+					//interpolate inwards
+					points[corner].x -= increment;
+					points[corner].y -= increment;
+					points[corner].z -= increment;
+					points[corner].w = 1;
+					count--;
+				}
+				if (count > stretch){
+					dir = false;	
+				}
+				if(count < 0){
+					morph = false;
+				}
+				
+			}
+			for (int i = 0; i < numVertices; i++){
+				buffer.put(points[i].x).put(points[i].y).put(points[i].z).put(points[i].w);
+				buffer.put(colors[i].x).put(colors[i].y).put(colors[i].z);
+				buffer.put(normals[i].x).put(normals[i].y).put(normals[i].z);
+				buffer.put(textures[i].x).put(textures[i].y);	
+			}
+			buffer.flip();
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+			GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, buffer);
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		}
 		if(animate){
 			rotation += 0.01f * delta;
 		}
+		
 	}
 
 	@Override
@@ -255,11 +305,11 @@ public void quad(int a, int b, int c, int d, int col){
 		GL11.glRotatef(rotation, 1,0,0);
 		GL11.glRotatef(rotation, 0,1,0);
 		GL11.glRotatef(rotation, 0,0,1);
-		renderGasket();
+		renderCube();
 		GL11.glPopMatrix();
 	}
 
-	private void renderGasket() {
+	private void renderCube() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tmap.getTextureID("metal"));

@@ -29,8 +29,8 @@ public abstract class SkelGL {
 	};
 	
 	/* animation indicator for menu selector */
-	boolean animate = true;
-
+	boolean animate = false;
+	boolean alive = false;
 	/* time at last frame */
 	long lastFrame;
 
@@ -122,7 +122,7 @@ public abstract class SkelGL {
 					renderGL();
 					canvas.swapBuffers();
 
-					// display.timerExec(50, this);
+					 //display.timerExec(50, this);
 					// Run this asynchronously
 					display.asyncExec(this);
 				}
@@ -252,6 +252,20 @@ public abstract class SkelGL {
 				shell.dispose();
 			}
 		});
+		
+		final MenuItem item2 = new MenuItem(menu, SWT.PUSH);
+
+		item2.setText(alive ? "Dead" : "Alive");
+
+		item2.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				alive = !alive;
+				item2.setText(alive ? "Dead" : "Alive");
+			}
+
+		});
+		
 		return menu;
 	}
 
