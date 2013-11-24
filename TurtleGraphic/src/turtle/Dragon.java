@@ -10,7 +10,9 @@ public class Dragon {
 
 	private Turtle turtle;
 	private int distance;
-	private Stack<Location> stack = new Stack<Location>();
+	private Stack<Float> xStack = new Stack<Float>();
+	private Stack<Float> yStack = new Stack<Float>();
+	private Stack<Double> angleStack = new Stack<Double>();
 	
 	public Dragon(Turtle turtle){
 		this.turtle = turtle;
@@ -97,10 +99,10 @@ public class Dragon {
 	//fractal wiki
 	public void tree(int n){
 		for(int i = 0; i < 10; i++){
-		stack.push(turtle.loc);
+		//stack.push(turtle.loc);
 		turtle.left(60);
 		turtle.forward(10);
-		turtle.loc=stack.pop();
+		//turtle.loc=stack.pop();
 		turtle.right(60);
 		turtle.forward(10);
 		}
@@ -149,13 +151,46 @@ public class Dragon {
 		}
 	}
 	
-	public void algae(ArrayList<Boolean> seq, int distance, int angle){
+	public void algae(ArrayList<String> seq, int n){
+		
 		for(int i = 0; i < seq.size(); i++){
-			if(seq.get(i))
-				turtle.right(angle);
-			else
-				turtle.forward(distance);
+			if(seq.get(i).equals("1") || seq.get(i).equals("0")){
+				turtle.forward(3);
+			}else if(seq.get(i).equals("[")){
+				xStack.push(turtle.loc.x);
+				yStack.push(turtle.loc.y);
+				angleStack.push(turtle.theta);
+				turtle.left(45);
+			}else{
+				turtle.loc.x=xStack.pop();
+				turtle.loc.y=yStack.pop();
+				turtle.theta=angleStack.pop();
+				turtle.right(45);
+			}
 		}
+		
+	}
+	
+public void brush(ArrayList<String> seq){
+		
+		for(int i = 0; i < seq.size(); i++){
+			if(seq.get(i).equals("F")){
+				turtle.forward(3);
+			}else if(seq.get(i).equals("[")){
+				xStack.push(turtle.loc.x);
+				yStack.push(turtle.loc.y);
+				angleStack.push(turtle.theta);
+			}else if (seq.get(i).equals("]")){
+				turtle.loc.x=xStack.pop();
+				turtle.loc.y=yStack.pop();
+				turtle.theta=angleStack.pop();
+			}else if (seq.get(i).equals("+")){
+				turtle.right(21);
+			}else{
+				turtle.left(21);
+			}
+		}
+		
 	}
 	
 	public void sier(ArrayList<String> seq, int distance, int angle){
@@ -168,6 +203,20 @@ public class Dragon {
 			}
 			else{
 				turtle.left(angle);
+			}
+		}
+	}
+	
+	public void koch(ArrayList<String> seq, int distance, int angle){
+		for(int i = 0; i < seq.size(); i++){
+			if(seq.get(i).equals("F")){
+				turtle.forward(distance);
+			}
+			else if (seq.get(i).equals("-")){
+				turtle.left(angle);
+			}
+			else{
+				turtle.right(angle);
 			}
 		}
 	}
@@ -186,8 +235,22 @@ public class Dragon {
 		}
 	}
 	
+	public void dragon(ArrayList<String> seq, int distance, int angle){
+		for(int i = 0; i < seq.size(); i++){
+			if(seq.get(i).equals("F")){
+				turtle.forward(distance);
+			}
+			else if (seq.get(i).equals("+")){
+				turtle.right(angle);
+			}
+			else{
+				turtle.left(angle);
+			}
+		}
+	}
+	
 	public static void main(String[] args){
-		//dragon.dragon(12);
+		
 		//dragon.koch(6,60);
 		//dragon.tree(50);
 		
@@ -203,57 +266,84 @@ public class Dragon {
 		dragon.koch(4,60);*/
 		
 		//dragon.cathedral(4, 90);
+		Turtle turtle = new Turtle();
+		int y = 600;
+		LSystem l = new LSystem();
+		Dragon dragon = new Dragon(turtle, 5);
+		turtle.init(400, 400, 0);
+		turtle.pen(true);
 		
+		/*ArrayList<String> seq = new ArrayList<String>();
+		seq.add("A");
+		for(int i = 0; i < 8; i++){
+			seq=l.LSystemSierpinski(seq);
+		}*/
+		/*ArrayList<String> seq = new ArrayList<String>();
+		seq.add("0");
+		for(int i = 0; i < 7; i++){
+			seq=l.LSystemAlgae(seq);
+		}*/
 		
-		
+		/*ArrayList<String> seq = new ArrayList<String>();
+		seq.add("X");
+		for(int i = 0; i < 6; i++){
+			seq=l.LSystemBrush(seq);
+		}*/
 		
 		/*ArrayList<Boolean> seq = new ArrayList<Boolean>();
 		seq.add(true);
 		for(int i = 0; i < 15; i++){
-			seq=dragon.algaeSeries(seq);
-		}
-		
-		for(int i = 0; i  <seq.size(); i++){
-			System.out.print(seq.get(i)+", ");
+			seq=l.LSystemAlgae(seq);
 		}*/
 		
-		/*ArrayList<String> seq = new ArrayList<String>();
-		seq.add("A");
-		for(int i = 0; i < 7; i++){
-			seq=dragon.LSystemSierpinski(seq);
-		}
-		
-		for(int i = 0; i < seq.size(); i++){
-			System.out.print(seq.get(i)+" ");
-		}*/
-		
-		Turtle turtle = new Turtle();
-		LSystem l = new LSystem();
-		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(1500, 1000, 0);
-		turtle.pen(true);
-		
-		
-		ArrayList<Boolean> seq = new ArrayList<Boolean>();
+		/*ArrayList<Boolean> seq = new ArrayList<Boolean>();
 		seq.add(true);
-		for(int i = 0; i < 17; i++){
+		for(int i = 0; i < 12; i++){
 			seq=l.LSystemThueMorse(seq);
-		}
-		
+		}*/
 		/*ArrayList<String> seq = new ArrayList<String>();
 		seq.add("F");
-		for(int i = 0; i < 16; i++){
+		for(int i = 0; i < 15; i++){
 			seq=l.LSystemLevy(seq);
 		}*/
+		//What if we feed l systems into different methods
+		/*ArrayList<String> seq = new ArrayList<String>();
+		seq.add("F");
+		seq.add("X");
+		for(int i = 0; i < 13; i++){
+			seq=l.LSystemDragon(seq);
+		}*/
+		
+		ArrayList<String> seq = new ArrayList<String>();
+		seq.add("F");
+		seq.add("-");
+		seq.add("-");
+		seq.add("F");
+		seq.add("-");
+		seq.add("-");
+		seq.add("F");
+		for(int i = 0; i < 3; i++){
+			seq=l.LSystemKoch(seq);
+		}
 		
 		/////////////////////////////////////////////////////
 		// Koch Curve generated with a Thue-Morse Sequence //
 		/////////////////////////////////////////////////////
-		dragon.thueTree(seq, 2, 60);
+		//dragon.thueTree(seq, 3, 60);
 		//dragon.tree(8);
-		//dragon.algae(seq, 75, 60);
-		//dragon.sier(seq, 4, 60);
-		//dragon.levy(seq, 3, 45);
+		//dragon.algae(seq, 2);
+		for(int i = 0; i < seq.size(); i++){
+			System.out.print(seq.get(i));
+		}
+		//dragon.sier(seq, 1, 60);
+		//////////////////////////////////////////////////////////
+		// If we feed the Dragon L-System to the Levy movement  //
+		// rules, using 90 degrees, we still get a dragon       //
+		//////////////////////////////////////////////////////////
+		//dragon.levy(seq, 2, 90);
+		//dragon.dragon(seq, 3, 90);
+		//dragon.brush(seq);
+		dragon.koch(seq, 15, 60);
 		turtle.pen(false);
 		turtle.show();
 		

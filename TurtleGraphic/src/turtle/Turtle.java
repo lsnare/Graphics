@@ -11,8 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class Turtle {
 
 	public static final double PI = Math.PI;
-	@SuppressWarnings("unused")
-	private double theta;
+	public double theta;
 	@SuppressWarnings("unused")
 	private boolean ink;
 	@SuppressWarnings("unused")
@@ -88,7 +87,7 @@ public class Turtle {
 	public void show(){
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(1700,1000));
+			Display.setDisplayMode(new DisplayMode(1000,800));
 			Display.create();
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
