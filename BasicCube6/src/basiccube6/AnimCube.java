@@ -222,6 +222,7 @@ public void quad(int a, int b, int c, int d, int col){
 	@Override
 	protected void update(int delta) {
 		if(alive){
+			increment = 0.001f * delta;
 			if(!morph){
 				morph = true;
 				corner = (int)(Math.random() * numVertices);
@@ -233,14 +234,14 @@ public void quad(int a, int b, int c, int d, int col){
 					points[corner].y += increment;
 					points[corner].z += increment;
 					points[corner].w = 1;
-					count++;
+					count += delta/10;
 				}else {
 					//interpolate inwards
 					points[corner].x -= increment;
 					points[corner].y -= increment;
 					points[corner].z -= increment;
 					points[corner].w = 1;
-					count--;
+					count-= delta/10;
 				}
 				if (count > stretch){
 					dir = false;	

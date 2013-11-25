@@ -301,11 +301,11 @@ public void brush(ArrayList<String> seq){
 		for(int i = 0; i < 12; i++){
 			seq=l.LSystemThueMorse(seq);
 		}*/
-		/*ArrayList<String> seq = new ArrayList<String>();
+		ArrayList<String> seq = new ArrayList<String>();
 		seq.add("F");
 		for(int i = 0; i < 15; i++){
 			seq=l.LSystemLevy(seq);
-		}*/
+		}
 		//What if we feed l systems into different methods
 		/*ArrayList<String> seq = new ArrayList<String>();
 		seq.add("F");
@@ -314,7 +314,7 @@ public void brush(ArrayList<String> seq){
 			seq=l.LSystemDragon(seq);
 		}*/
 		
-		ArrayList<String> seq = new ArrayList<String>();
+		/*ArrayList<String> seq = new ArrayList<String>();
 		seq.add("F");
 		seq.add("-");
 		seq.add("-");
@@ -324,7 +324,7 @@ public void brush(ArrayList<String> seq){
 		seq.add("F");
 		for(int i = 0; i < 3; i++){
 			seq=l.LSystemKoch(seq);
-		}
+		}*/
 		
 		/////////////////////////////////////////////////////
 		// Koch Curve generated with a Thue-Morse Sequence //
@@ -332,7 +332,7 @@ public void brush(ArrayList<String> seq){
 		//dragon.thueTree(seq, 3, 60);
 		//dragon.tree(8);
 		//dragon.algae(seq, 2);
-		for(int i = 0; i < seq.size(); i++){
+		for(int i = 7; i < seq.size(); i++){
 			System.out.print(seq.get(i));
 		}
 		//dragon.sier(seq, 1, 60);
@@ -340,10 +340,10 @@ public void brush(ArrayList<String> seq){
 		// If we feed the Dragon L-System to the Levy movement  //
 		// rules, using 90 degrees, we still get a dragon       //
 		//////////////////////////////////////////////////////////
-		//dragon.levy(seq, 2, 90);
+		dragon.levy(seq, 2, 45);
 		//dragon.dragon(seq, 3, 90);
 		//dragon.brush(seq);
-		dragon.koch(seq, 15, 60);
+		//dragon.koch(seq, 15, 60);
 		turtle.pen(false);
 		turtle.show();
 		

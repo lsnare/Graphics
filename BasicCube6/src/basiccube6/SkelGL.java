@@ -122,9 +122,9 @@ public abstract class SkelGL {
 					renderGL();
 					canvas.swapBuffers();
 
-					 //display.timerExec(50, this);
+					 display.timerExec(50, this);
 					// Run this asynchronously
-					display.asyncExec(this);
+					//display.asyncExec(this);
 				}
 			}
 		}; // End runnable
