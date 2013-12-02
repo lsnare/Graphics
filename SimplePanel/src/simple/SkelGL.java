@@ -223,13 +223,13 @@ public abstract class SkelGL {
 		// Add items to it
 		final MenuItem item0 = new MenuItem(menu, SWT.PUSH);
 
-		item0.setText(animate ? "Stop" : "Animate");
+		item0.setText(animate ? "Stop Dancing" : "Dance");
 
 		item0.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 				animate = !animate;
-				item0.setText(animate ? "Stop" : "Animate");
+				item0.setText(animate ? "Stop Dancing" : "Dance");
 			}
 
 		});

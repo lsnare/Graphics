@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import shader.InitShader;
 
-public class SimplePanel extends SkelGL{
+public class SimplePanel2 extends SkelGL{
 
 	int numVertices = 4;
 	private Vector4f[] points = new Vector4f[numVertices];
@@ -23,10 +23,13 @@ public class SimplePanel extends SkelGL{
 	//buffer stuff
 	int vboID;
 	int shaderProgram;
-	int vpos, cpos;
+	int vpos, cpos, rpos;
+	
+	//animation stuff
+	float rotation = 0.0f;
 	
 	public static void main(String[] args) {
-		SimplePanel panel = new SimplePanel();
+		SimplePanel2 panel = new SimplePanel2();
 		panel.start();
 	}
 
@@ -81,7 +84,7 @@ public class SimplePanel extends SkelGL{
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vcBuffer, GL15.GL_STATIC_DRAW);
 		
 		//use shaders
-		shaderProgram = InitShader.initProgram("GLSL/vshader1.glsl", "GLSL/shader1.glsl");
+		shaderProgram = InitShader.initProgram("GLSL/vshader2.glsl", "GLSL/shader1.glsl");
 		
 		//use this program
 		ARBShaderObjects.glUseProgramObjectARB(shaderProgram);
@@ -99,12 +102,23 @@ public class SimplePanel extends SkelGL{
 		GL20.glEnableVertexAttribArray(cpos);
 		GL20.glVertexAttribPointer(cpos, 4, GL11.GL_FLOAT, false, stride, offset);
 		
-		
+		rpos = GL20.glGetUniformLocation(shaderProgram, "theta");
+		FloatBuffer rot = BufferUtils.createFloatBuffer(3 * numVertices);
+		rot.put(rotation).put(rotation).put(rotation);
+		rot.flip();
+		GL20.glUniform3(rpos, rot);
 		
 	}
 
 	@Override
 	protected void update(int delta) {
+		if(animate){
+			rotation += 0.0015f * delta;
+			FloatBuffer rot = BufferUtils.createFloatBuffer(3 * numVertices);
+			rot.put(rotation).put(rotation).put(rotation);
+			rot.flip();
+			GL20.glUniform3(rpos, rot);
+		}
 	}
 
 	@Override
