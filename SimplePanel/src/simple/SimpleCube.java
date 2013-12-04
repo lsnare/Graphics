@@ -13,14 +13,13 @@ import org.lwjgl.util.vector.Vector4f;
 
 import shader.InitShader;
 
-public class SimplePanel2 extends SkelGL{
+public class SimpleCube extends SkelGL{
 
-	int numVertices = 4;
+	int numVertices = 6;
 	private Vector4f[] points = new Vector4f[numVertices];
 	private Vector4f[] colors = new Vector4f[numVertices];
 	int sizeOfFloat = Float.SIZE / Byte.SIZE;
-	FloatBuffer rot = BufferUtils.createFloatBuffer(3 * numVertices);
-
+	
 	//buffer stuff
 	int vboID;
 	int shaderProgram;
@@ -30,17 +29,20 @@ public class SimplePanel2 extends SkelGL{
 	float rotation = 0.0f;
 	
 	public static void main(String[] args) {
-		SimplePanel2 panel = new SimplePanel2();
+		SimpleCube panel = new SimpleCube();
 		panel.start();
 	}
 
-	public void initSquare(){
+	public void initCube(){
 		
 		points[0] = new Vector4f(-0.5f, -0.5f, 0.5f, 1);
 		points[1] = new Vector4f( 0.5f, -0.5f, 0.5f, 1);
 		points[2] = new Vector4f( 0.5f,  0.5f, 0.5f, 1);
 		points[3] = new Vector4f(-0.5f,  0.5f, 0.5f, 1);
-
+		points[4] = new Vector4f( 0.5f,  -0.5f, -0.5f, 1);
+		points[5] = new Vector4f(0.5f,  0.5f, 0f, 1);
+		
+		
 		colors[0] = new Vector4f(1, 0, 0, 1);
 		colors[1] = new Vector4f(0, 1, 0, 0);
 		colors[2] = new Vector4f(0, 0, 1, 0);
@@ -65,17 +67,17 @@ public class SimplePanel2 extends SkelGL{
 		GL11.glClearColor(0, 0.4f, 0.9f, 0);
 		GL11.glColor3f(1.0f, 0, 0);
 		
-		initSquare();
+		initCube();
 		allocVBO();
 	}
 	
 	protected void allocVBO() {
 		
-		FloatBuffer vcBuffer = BufferUtils.createFloatBuffer(4 * numVertices + 4 * numVertices);
+		FloatBuffer vcBuffer = BufferUtils.createFloatBuffer(6 * numVertices + 4 * numVertices);
 		
 		for(int i = 0; i < numVertices; i++){
 			vcBuffer.put(points[i].x).put(points[i].y).put(points[i].z).put(points[i].w);
-			vcBuffer.put(colors[i].x).put(colors[i].y).put(colors[i].z).put(colors[i].w);
+			vcBuffer.put(colors[i%4].x).put(colors[i%4].y).put(colors[i%4].z).put(colors[i%4].w);
 		}
 		vcBuffer.flip();
 		
@@ -90,7 +92,7 @@ public class SimplePanel2 extends SkelGL{
 		//use this program
 		ARBShaderObjects.glUseProgramObjectARB(shaderProgram);
 		
-		int stride = 4 * sizeOfFloat + 4 * sizeOfFloat;
+		int stride = 6 * sizeOfFloat + 4 * sizeOfFloat;
 		int offset = 0;
 		
 		//enable vertex processing
@@ -104,6 +106,7 @@ public class SimplePanel2 extends SkelGL{
 		GL20.glVertexAttribPointer(cpos, 4, GL11.GL_FLOAT, false, stride, offset);
 		
 		rpos = GL20.glGetUniformLocation(shaderProgram, "theta");
+		FloatBuffer rot = BufferUtils.createFloatBuffer(3 * numVertices);
 		rot.put(rotation).put(rotation).put(rotation);
 		rot.flip();
 		GL20.glUniform3(rpos, rot);
@@ -156,11 +159,11 @@ public class SimplePanel2 extends SkelGL{
 		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
-		renderSquare();
+		renderCube();
 		
 	}
 
-	private void renderSquare() {
+	private void renderCube() {
 		
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glDrawArrays(GL11.GL_QUADS, 0, numVertices);
