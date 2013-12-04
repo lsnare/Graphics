@@ -270,14 +270,14 @@ public void brush(ArrayList<String> seq){
 		int y = 600;
 		LSystem l = new LSystem();
 		Dragon dragon = new Dragon(turtle, 5);
-		turtle.init(400, 400, 0);
+		turtle.init(400, 300, 0);
 		turtle.pen(true);
 		
-		/*ArrayList<String> seq = new ArrayList<String>();
+		ArrayList<String> seq = new ArrayList<String>();
 		seq.add("A");
 		for(int i = 0; i < 8; i++){
 			seq=l.LSystemSierpinski(seq);
-		}*/
+		}
 		/*ArrayList<String> seq = new ArrayList<String>();
 		seq.add("0");
 		for(int i = 0; i < 7; i++){
@@ -301,16 +301,16 @@ public void brush(ArrayList<String> seq){
 		for(int i = 0; i < 12; i++){
 			seq=l.LSystemThueMorse(seq);
 		}*/
-		ArrayList<String> seq = new ArrayList<String>();
+		/*ArrayList<String> seq = new ArrayList<String>();
 		seq.add("F");
 		for(int i = 0; i < 15; i++){
 			seq=l.LSystemLevy(seq);
-		}
+		}*/
 		//What if we feed l systems into different methods
 		/*ArrayList<String> seq = new ArrayList<String>();
 		seq.add("F");
 		seq.add("X");
-		for(int i = 0; i < 13; i++){
+		for(int i = 0; i < 14; i++){
 			seq=l.LSystemDragon(seq);
 		}*/
 		
@@ -322,7 +322,7 @@ public void brush(ArrayList<String> seq){
 		seq.add("-");
 		seq.add("-");
 		seq.add("F");
-		for(int i = 0; i < 3; i++){
+		for(int i = 0; i < 4; i++){
 			seq=l.LSystemKoch(seq);
 		}*/
 		
@@ -335,15 +335,15 @@ public void brush(ArrayList<String> seq){
 		for(int i = 7; i < seq.size(); i++){
 			System.out.print(seq.get(i));
 		}
-		//dragon.sier(seq, 1, 60);
+		dragon.sier(seq, 2, 60);
 		//////////////////////////////////////////////////////////
 		// If we feed the Dragon L-System to the Levy movement  //
 		// rules, using 90 degrees, we still get a dragon       //
 		//////////////////////////////////////////////////////////
-		dragon.levy(seq, 2, 45);
+		//dragon.levy(seq, 2, 45);
 		//dragon.dragon(seq, 3, 90);
 		//dragon.brush(seq);
-		//dragon.koch(seq, 15, 60);
+		//dragon.koch(seq, 5, 60);
 		turtle.pen(false);
 		turtle.show();
 		
