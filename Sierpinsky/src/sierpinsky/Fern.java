@@ -131,7 +131,7 @@ public class Fern extends SkelGL{
 		
 		for (int i = 0; i < points.size(); i++) {
 			//multi-colored gasket
-			GL11.glColor3f(0,1,0);
+			GL11.glColor3f(colors[i%3].x, colors[i%3].y, colors[i%3].z);
 			GL11.glVertex2f(points.get(i).x, points.get(i).y);
 		}
 		

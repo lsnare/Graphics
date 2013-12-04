@@ -1,20 +1,18 @@
 package turtle;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 
 public class Turtle {
 
 	public static final double PI = Math.PI;
 	public double theta;
-	@SuppressWarnings("unused")
 	private boolean ink;
-	@SuppressWarnings("unused")
 	public Location loc;
 	
 	//tiny class for location of turtle
@@ -87,7 +85,7 @@ public class Turtle {
 	public void show(){
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(1000,800));
+			Display.setDisplayMode(new DisplayMode(1500,800));
 			Display.create();
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
@@ -120,40 +118,11 @@ public class Turtle {
 		
 	}
 	
-	public void patternOne(int size, double angle, int max){
-		pen(true);
-		do{
-			forward(size);
-			right(angle);
-			size+=2;
-		}while(size<max);
-		pen(false);
-	}
-	
-	/**
-	 * SAVE THIS METHOD
-	 * @param size
-	 * @param angle
-	 * @param max
+	/*
+	 * A few example methods
 	 */
-	public void patterntwo(int size, double angle, int max){
-		pen(true);
-		do{
-			
-			forward(size);
-			left(135);
-			forward(1);
-			right(45);
-			forward(1);
-			left(135);
-			forward(1);
-			right(angle);
-			size+=5;//1,5
-		}while(size<max);
-		pen(false);
-	}
 	
-	public void pentogram(int size, double angle, int max){
+	public void pentagram(int size, double angle, int max){
 		pen(true);
 		do{
 			
@@ -188,11 +157,27 @@ public class Turtle {
 		pen(false);
 	}
 	
+	boolean menu(Turtle turtle){
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter a patter you wish to view. Patterns included: ");
+		System.out.println(" - Pentagram \n - ThetaMaze\n");
+		String choice = scan.nextLine();
+		
+		switch (choice){
+			case "Pentagram": turtle.pentagram(1, 80, 5000);
+				return true;
+			case "ThetaMaze": turtle.thetaMaze(10,  90, 1000, 2); 
+				return true;
+			default: return false;
+		}
+	}
+	
 	public static void main(String[] args){
 		Turtle turtle = new Turtle();
 		turtle.init(370,310, 0);
-		turtle.pentogram(1, 80, 5000);//90 with size+=1, 80 with size+=5
-		//turtle.thetaMaze(10,  90, 1000, 2);
+		while(!turtle.menu(turtle)){
+			System.out.println("You did not enter a valid choice, please try again.");
+		}
 		turtle.show();
 	}
 	
