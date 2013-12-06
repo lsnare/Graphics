@@ -36,15 +36,17 @@ public class SimpleCube extends SkelGL{
 
 	public void initSquare(){
 		
-		points[0] = new Vector4f(-0.5f, -0.5f, 0.5f, 1);
+		points[0] = new Vector4f(-0.5f, 0.5f, 0.5f, 1);
 		points[1] = new Vector4f( 0.5f, -0.5f, 0.5f, 1);
 		points[2] = new Vector4f( 0.5f,  0.5f, 0.5f, 1);
 		points[3] = new Vector4f(-0.5f,  0.5f, 0.5f, 1);
+		
 
 		colors[0] = new Vector4f(1, 0, 0, 1);
 		colors[1] = new Vector4f(0, 1, 0, 0);
 		colors[2] = new Vector4f(0, 0, 1, 0);
 		colors[3] = new Vector4f(1, 1, 0, 0);
+		
 		
 	}
 	
@@ -90,7 +92,7 @@ public class SimpleCube extends SkelGL{
 		//use this program
 		ARBShaderObjects.glUseProgramObjectARB(shaderProgram);
 		
-		int stride = 4 * sizeOfFloat + 4 * sizeOfFloat;
+		int stride = 4 * numVertices + 4 * numVertices;
 		int offset = 0;
 		
 		//enable vertex processing
@@ -98,7 +100,7 @@ public class SimpleCube extends SkelGL{
 		GL20.glEnableVertexAttribArray(vpos);
 		GL20.glVertexAttribPointer(vpos, 4, GL11.GL_FLOAT, false, stride, offset);
 		
-		offset += 4 * sizeOfFloat;
+		offset += 4 * numVertices;
 		cpos = GL20.glGetAttribLocation(shaderProgram, "vColor");
 		GL20.glEnableVertexAttribArray(cpos);
 		GL20.glVertexAttribPointer(cpos, 4, GL11.GL_FLOAT, false, stride, offset);

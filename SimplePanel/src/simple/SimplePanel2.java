@@ -15,7 +15,7 @@ import shader.InitShader;
 
 public class SimplePanel2 extends SkelGL{
 
-	int numVertices = 4;
+	int numVertices = 24;
 	private Vector4f[] points = new Vector4f[numVertices];
 	private Vector4f[] colors = new Vector4f[numVertices];
 	int sizeOfFloat = Float.SIZE / Byte.SIZE;
@@ -36,15 +36,72 @@ public class SimplePanel2 extends SkelGL{
 
 	public void initSquare(){
 		
+		//face1
 		points[0] = new Vector4f(-0.5f, -0.5f, 0.5f, 1);
 		points[1] = new Vector4f( 0.5f, -0.5f, 0.5f, 1);
 		points[2] = new Vector4f( 0.5f,  0.5f, 0.5f, 1);
 		points[3] = new Vector4f(-0.5f,  0.5f, 0.5f, 1);
+		
+		//face2
+		points[4] = new Vector4f(-0.5f, -0.5f, -0.5f, 1);
+		points[5] = new Vector4f( 0.5f, -0.5f, -0.5f, 1);
+		points[6] = new Vector4f( 0.5f,  0.5f, -0.5f, 1);
+		points[7] = new Vector4f(-0.5f,  0.5f, -0.5f, 1);
+		
+		//face3
+		points[8] = new Vector4f(0.5f, -0.5f, 0.5f, 1);
+		points[9] = new Vector4f( -0.5f, -0.5f, 0.5f, 1);
+		points[10] = new Vector4f( -0.5f,  -0.5f, -0.5f, 1);
+		points[11] = new Vector4f(0.5f,  -0.5f, -0.5f, 1);
 
+		//face4
+		points[12] = new Vector4f(0.5f, 0.5f, -0.5f, 1);	
+		points[13] = new Vector4f( -0.5f, 0.5f, -0.5f, 1);
+		points[14] = new Vector4f( -0.5f,  0.5f, 0.5f, 1);
+		points[15] = new Vector4f(0.5f,  0.5f, 0.5f, 1);
+				
+		//face5
+		points[16] = new Vector4f(-0.5f, -0.5f, 0.5f, 1);	
+		points[17] = new Vector4f( -0.5f, 0.5f, 0.5f, 1);
+		points[18] = new Vector4f( -0.5f,  0.5f, -0.5f, 1);
+		points[19] = new Vector4f(-0.5f,  -0.5f, -0.5f, 1);
+		
+		//face6
+		points[20] = new Vector4f(0.5f, -0.5f, 0.5f, 1);	
+		points[21] = new Vector4f( 0.5f, 0.5f, 0.5f, 1);
+		points[22] = new Vector4f( 0.5f,  0.5f, -0.5f, 1);
+		points[23] = new Vector4f(0.5f,  -0.5f, -0.5f, 1);
+				
+		
 		colors[0] = new Vector4f(1, 0, 0, 1);
-		colors[1] = new Vector4f(0, 1, 0, 0);
-		colors[2] = new Vector4f(0, 0, 1, 0);
-		colors[3] = new Vector4f(1, 1, 0, 0);
+		colors[1] = new Vector4f(0, 0, 0, 0);
+		colors[2] = new Vector4f(1, 0, 0, 0);
+		colors[3] = new Vector4f(0, 0, 0, 0);
+		
+		colors[4] = new Vector4f(0, 0, 0, 1);
+		colors[5] = new Vector4f(1, 0, 0, 0);
+		colors[6] = new Vector4f(0, 0, 0, 0);
+		colors[7] = new Vector4f(0, 0, 0, 0);
+		
+		colors[8] = new Vector4f(1, 0, 0, 1);
+		colors[9] = new Vector4f(0, 0, 0, 0);
+		colors[10] = new Vector4f(0, 0, 0, 0);
+		colors[11] = new Vector4f(1, 0, 0, 0);
+		
+		colors[12] = new Vector4f(1, 0, 0, 1);
+		colors[13] = new Vector4f(0, 0, 0, 0);
+		colors[14] = new Vector4f(0, 0, 0, 0);
+		colors[15] = new Vector4f(1, 0, 0, 0);
+		
+		colors[16] = new Vector4f(1, 0, 0, 1);
+		colors[17] = new Vector4f(0, 0, 0, 0);
+		colors[18] = new Vector4f(1, 0, 0, 0);
+		colors[19] = new Vector4f(1, 0, 0, 0);
+		
+		colors[20] = new Vector4f(1, 0, 0, 1);
+		colors[21] = new Vector4f(0, 0, 0, 0);
+		colors[22] = new Vector4f(1, 0, 0, 0);
+		colors[23] = new Vector4f(1, 0, 0, 0);
 		
 	}
 	
