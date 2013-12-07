@@ -25,7 +25,7 @@ public class SimplePanel extends SkelGL{
 	int shaderProgram;
 	int vpos, cpos;
 	
-	public static void main(String[] args) {
+	public static void mainA(String[] args) {
 		SimplePanel panel = new SimplePanel();
 		panel.start();
 	}
