@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import shader.InitShader;
 
-public class SimplePanel2 extends SkelGL{
+public class ShaderCube extends SkelGL{
 
 	int numVertices = 24;
 	private Vector4f[] points = new Vector4f[numVertices];
@@ -30,7 +30,7 @@ public class SimplePanel2 extends SkelGL{
 	float rotation = 0.0f;
 	
 	public static void main(String[] args) {
-		SimplePanel2 panel = new SimplePanel2();
+		ShaderCube panel = new ShaderCube();
 		panel.start();
 	}
 
