@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class LSystem {
 	
 
-	// grammar for the Sierpinski L-System
+	// L-System for generating the Sierpinski triangle
 	public String LSystemSierpinski(int iterations) {
 		
 		String axiom = "A";
-		String next = "";
+		String next;
 
 		for (int i = 0; i < iterations; i++) {
 
@@ -23,56 +23,60 @@ public class LSystem {
 				else 
 					next += c;
 			}
-			
+		
 			axiom = next;
 		}
+		
 		return axiom;
 	}
 	
 		
-		//L-System for generating the Dragon Fractal
-		public String LSystemDragon(int iterations) {
+	//L-System for generating the Dragon Fractal
+	public String LSystemDragon(int iterations) {
 
-			String axiom = "FX";
-			String next = "";
+		String axiom = "FX";
+		String next;
 			
-			for(int  i = 0; i < iterations; i++){
-				//clear out the next string
-				next = "";
-				for(int j = 0; j < axiom.length(); j++){
-					char c = axiom.charAt(j);
-					//system rules
-					if(c == 'X')
-						next += "X+YF";
-					else if (c == 'Y')
-						next += "FX-Y";
-					else
-						next += c;
-				}
-				axiom = next;
+		for(int  i = 0; i < iterations; i++){
+			//clear out the next string
+			next = "";
+			for(int j = 0; j < axiom.length(); j++){
+				char c = axiom.charAt(j);
+				//system rules
+				if(c == 'X')
+					next += "X+YF";
+				else if (c == 'Y')
+					next += "FX-Y";
+				else
+					next += c;
 			}
+			axiom = next;
+		}
 
 		return axiom;
 	}
 
-	// grammar for the Lev'y C Curve L-System
-	public ArrayList<String> LSystemLevy(ArrayList<String> inseq) {
+	// L-System for generating the Levy C Curve
+	public String LSystemLevy(int iterations) {
 
-		ArrayList<String> sequence = new ArrayList<String>();
+		String axiom = "F";
+		String next;
 
-		for (int j = 0; j < inseq.size(); j++) {
-			if (inseq.get(j) == "F") {
-				sequence.add("+");
-				sequence.add("F");
-				sequence.add("-");
-				sequence.add("-");
-				sequence.add("F");
-				sequence.add("+");
-			} else
-				sequence.add(inseq.get(j));
+		for (int i = 0; i < iterations; i++) {
+			
+			next = "";
+			for(int j = 0; j < axiom.length(); j++){
+				char c = axiom.charAt(j);
+				if(c == 'F')
+					next += "+F--F+";
+				else 
+					next += c;
+			}
+			
+			axiom = next;
 		}
 
-		return sequence;
+		return axiom;
 	}
 	
 	public ArrayList<String> LSystemAlgae(ArrayList<String> inseq) {
@@ -96,38 +100,30 @@ public class LSystem {
 		return sequence;
 	}
 	
-	public ArrayList<String> LSystemBrush(ArrayList<String> inseq) {
+	// L-System for generating a bush-like plant
+	public String LSystemBrush(int iterations) {
 
-		ArrayList<String> sequence = new ArrayList<String>();
-
-		for (int j = 0; j < inseq.size(); j++) {
-			if (inseq.get(j) == "F") {
-				sequence.add("F");
-				sequence.add("F");
-			} else if (inseq.get(j) == "X"){
-				sequence.add("F");
-				sequence.add("-");
-				sequence.add("[");
-				sequence.add("[");
-				sequence.add("X");
-				sequence.add("]");
-				sequence.add("+");
-				sequence.add("X");
-				sequence.add("]");
-				sequence.add("+");
-				sequence.add("F");
-				sequence.add("[");
-				sequence.add("+");
-				sequence.add("F");
-				sequence.add("X");
-				sequence.add("]");
-				sequence.add("-");
-				sequence.add("X");
-			}else{
-				sequence.add(inseq.get(j));
+		String axiom = "X";
+		String next;
+		
+		for(int i = 0; i < iterations; i++){
+			
+			next = "";
+			for(int j = 0; j < axiom.length(); j++){
+				char c = axiom.charAt(j);
+				if(c == 'F')
+					next += "FF";
+				else if (c == 'X')
+					next += "F-[[X]+X]+F[+FX]-X";
+				else
+					next += c;
 			}
+			
+			axiom = next;
+			
 		}
-		return sequence;
+		
+		return axiom;
 	}
 	
 	public ArrayList<String> LSystemKoch(ArrayList<String> inseq) {

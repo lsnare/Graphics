@@ -1,6 +1,7 @@
 package turtle;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Stack;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -14,6 +15,9 @@ public class Turtle {
 	public double theta;
 	private boolean ink;
 	public Location loc;
+	protected Stack xStack = new Stack();
+	//protected Stack<Float> yStack = new Stack<Float>();
+	//protected Stack<Double> angleStack = new Stack<Double>();
 	
 	//tiny class for location of turtle
 	class Location{
@@ -128,6 +132,13 @@ public class Turtle {
 				this.right(angle);
 			else if (c == '-')
 				this.left(angle);
+			else if (c == '['){
+				xStack.push(this.loc.x);
+				xStack.push(this.loc.y);
+				xStack.push(angle);
+			}else if (c == ']'){
+				//xStack.pop
+			}
 		}
 	}
 	
