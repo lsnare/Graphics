@@ -85,7 +85,7 @@ public class Turtle {
 	public void show(){
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(1500,800));
+			Display.setDisplayMode(new DisplayMode(800,800));
 			Display.create();
 		} catch (LWJGLException e) {
 			// TODO Auto-generated catch block
@@ -116,6 +116,19 @@ public class Turtle {
 		}
 		Display.destroy();	
 		
+	}
+	
+	public void interpretLSystem(String seq, int distance, double angle){
+		
+		for(int i = 0; i < seq.length(); i++){
+			char c = seq.charAt(i);
+			if(c == 'F' || c == 'A' || c == 'B')
+				this.forward(distance);
+			else if (c == '+')
+				this.right(angle);
+			else if (c == '-')
+				this.left(angle);
+		}
 	}
 	
 	/*
@@ -172,7 +185,7 @@ public class Turtle {
 		}
 	}
 	
-	public static void main(String[] args){
+	public static void mainA(String[] args){
 		Turtle turtle = new Turtle();
 		turtle.init(370,310, 0);
 		while(!turtle.menu(turtle)){

@@ -6,57 +6,53 @@ public class LSystem {
 	
 
 	// grammar for the Sierpinski L-System
-	public ArrayList<String> LSystemSierpinski(ArrayList<String> inseq) {
-
-		ArrayList<String> sequence = new ArrayList<String>();
-
-		for (int j = 0; j < inseq.size(); j++) {
-
-			if (inseq.get(j).equals("A")) {
-				sequence.add("B");
-				sequence.add("-");
-				sequence.add("A");
-				sequence.add("-");
-				sequence.add("B");
-
-			} else if (inseq.get(j).equals("B")) {
-				// a, b = forward, + = left, - = right
-				sequence.add("A");
-				sequence.add("+");
-				sequence.add("B");
-				sequence.add("+");
-				sequence.add("A");
-			} else if (inseq.get(j).equals("+") || inseq.get(j).equals("-")) {
-				sequence.add(inseq.get(j));
-			}
-		}
-		return sequence;
-	}
+	public String LSystemSierpinski(int iterations) {
 		
-		public ArrayList<String> LSystemDragon(ArrayList<String> curSeq) {
+		String axiom = "A";
+		String next = "";
 
-			//create a sequence to replace the current one
-			ArrayList<String> newSeq = new ArrayList<String>();
+		for (int i = 0; i < iterations; i++) {
 
-			for (int i = 0; i < curSeq.size(); i++) {
+			next = "";
+			for(int j = 0; j < axiom.length(); j++){
+				char c = axiom.charAt(j);
+				if(c == 'A')
+					next += "B-A-B";
+				else if (c == 'B')
+					next += "A+B+A";
+				else 
+					next += c;
+			}
+			
+			axiom = next;
+		}
+		return axiom;
+	}
+	
+		
+		//L-System for generating the Dragon Fractal
+		public String LSystemDragon(int iterations) {
 
-				if (curSeq.get(i).equals("X")) {
-					newSeq.add("X");
-					newSeq.add("+");
-					newSeq.add("Y");
-					newSeq.add("F");
-				} else if (curSeq.get(i).equals("Y")) {
-					// a, b = forward, + = left, - = right
-					newSeq.add("F");
-					newSeq.add("X");
-					newSeq.add("-");
-					newSeq.add("Y");
-				} else {
-					newSeq.add(curSeq.get(i));
+			String axiom = "FX";
+			String next = "";
+			
+			for(int  i = 0; i < iterations; i++){
+				//clear out the next string
+				next = "";
+				for(int j = 0; j < axiom.length(); j++){
+					char c = axiom.charAt(j);
+					//system rules
+					if(c == 'X')
+						next += "X+YF";
+					else if (c == 'Y')
+						next += "FX-Y";
+					else
+						next += c;
 				}
+				axiom = next;
 			}
 
-		return newSeq;
+		return axiom;
 	}
 
 	// grammar for the Lev'y C Curve L-System

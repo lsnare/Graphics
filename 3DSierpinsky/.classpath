@@ -2,20 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/usr/local/lwjgl-2.9.0/jar/lwjgl.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/usr/local/lwjgl-2.9.0/javadoc/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/local/lwjgl-2.9.0/native/linux"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/usr/local/lwjgl-2.9.0/jar/lwjgl_util.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/usr/local/lwjgl-2.9.0/javadoc/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TextureMapper"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SkelGL"/>
-	<classpathentry kind="lib" path="/usr/local/slick-util/slick-util.jar" sourcepath="/usr/local/slick-util/slick-util-src.zip"/>
+	<classpathentry kind="lib" path="/usr/local/lib/slick-util.jar" sourcepath="/usr/local/slick-util/slick-util-src.zip"/>
+	<classpathentry kind="lib" path="/usr/local/lwjgl-2.9.1/jar/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/local/lwjgl-2.9.1/native/linux"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/usr/local/lwjgl-2.9.1/jar/lwjgl_util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
