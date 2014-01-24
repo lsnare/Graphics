@@ -22,15 +22,15 @@ public class Tester {
 		// TODO Auto-generated method stub
 		Turtle turtle = new Turtle();
 		LSystem l = new LSystem();
-		Tester test = new Tester();
 		String seq = new String();
 		//seq = l.LSystemDragon(13);
 		//seq = l.LSystemSierpinski(7);
-		seq = l.LSystemLevy(14);
+		//seq = l.LSystemLevy(14);
+		seq = l.LSystemBrush(5);
 		System.out.println(seq.toString());
-		turtle.init(400,400,0);
+		turtle.init(300,400,0);
 		turtle.pen(true);
-		turtle.interpretLSystem(seq, 2, 45);
+		turtle.interpretLSystem(seq, 5, 22.5);
 		turtle.show();
 	}
 

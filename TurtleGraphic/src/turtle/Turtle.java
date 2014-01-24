@@ -1,3 +1,18 @@
+/****************************************************************
+ * Turtle Graphics Implementation   							*
+ * 																*
+ * Author: Lucian Snare             							*
+ * 																*
+ * A simple graphics paradigm in which a "turtle" with 			*
+ * a pen attached to its stomach draws a picture by moving 		*
+ * and turning at a specified distance and angle.	 			*
+ * 																*
+ * Special thanks to Dr. Krish Pillai for providing the basic 	*
+ * code as part of the Interactive Graphics Programming class 	*
+ * at Lock Haven University.									*
+ * 																*
+ * **************************************************************/
+
 package turtle;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -12,13 +27,18 @@ import org.lwjgl.opengl.GL11;
 public class Turtle {
 
 	public static final double PI = Math.PI;
+	//the current angle of the turtle in degrees
 	public double theta;
+	//true if the pen is down, flase if it is up
 	private boolean ink;
+	//the location current location of the turtle, given as an (x,y) pair
 	public Location loc;
-	protected Stack xStack = new Stack();
-	//protected Stack<Float> yStack = new Stack<Float>();
-	//protected Stack<Double> angleStack = new Stack<Double>();
 	
+	//Stacks to hold position and angle values
+	protected Stack<Location> lStack = new Stack<Location>();
+	//protected Stack<Float> yStack = new Stack<Float>();
+	protected Stack<Double> aStack = new Stack<Double>();
+
 	//tiny class for location of turtle
 	class Location{
 		float x,y;
@@ -92,7 +112,6 @@ public class Turtle {
 			Display.setDisplayMode(new DisplayMode(800,800));
 			Display.create();
 		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -109,10 +128,8 @@ public class Turtle {
 			GL11.glColor3f(0.0f, 0.0f, 0.0f);
 			GL11.glBegin(GL11.GL_LINES);
 			
-			int i = 0;
 			for (Location ll : path){
 				GL11.glVertex2f(ll.x, ll.y);
-				i++;
 			}
 			
 			GL11.glEnd();
@@ -122,22 +139,29 @@ public class Turtle {
 		
 	}
 	
+	/*Method for translating L-System grammars into 
+	 movement rules for the turtle */
+	
 	public void interpretLSystem(String seq, int distance, double angle){
 		
 		for(int i = 0; i < seq.length(); i++){
 			char c = seq.charAt(i);
+			//typical forward movement characters
 			if(c == 'F' || c == 'A' || c == 'B')
 				this.forward(distance);
+			//typical rules for direction
 			else if (c == '+')
 				this.right(angle);
 			else if (c == '-')
 				this.left(angle);
+			//Push location and angle
 			else if (c == '['){
-				xStack.push(this.loc.x);
-				xStack.push(this.loc.y);
-				xStack.push(angle);
+				lStack.push(new Location(loc.x, loc.y));
+				aStack.push(theta);
+			//Pop location and angle
 			}else if (c == ']'){
-				//xStack.pop
+				loc = lStack.pop();
+				theta = aStack.pop();
 			}
 		}
 	}
@@ -180,29 +204,4 @@ public class Turtle {
 		}while(size<max);
 		pen(false);
 	}
-	
-	boolean menu(Turtle turtle){
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Enter a patter you wish to view. Patterns included: ");
-		System.out.println(" - Pentagram \n - ThetaMaze\n");
-		String choice = scan.nextLine();
-		
-		switch (choice){
-			case "Pentagram": turtle.pentagram(1, 80, 5000);
-				return true;
-			case "ThetaMaze": turtle.thetaMaze(10,  90, 1000, 2); 
-				return true;
-			default: return false;
-		}
-	}
-	
-	public static void mainA(String[] args){
-		Turtle turtle = new Turtle();
-		turtle.init(370,310, 0);
-		while(!turtle.menu(turtle)){
-			System.out.println("You did not enter a valid choice, please try again.");
-		}
-		turtle.show();
-	}
-	
 }

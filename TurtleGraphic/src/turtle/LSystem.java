@@ -1,3 +1,19 @@
+/********************************************************************
+ * Lindenmayer System (L-System) Implementation   					*
+ * 																	*
+ * Author: Lucian Snare             								*
+ * 																	*
+ * L-Systems are a string rewriting system used to model 			*
+ * plant and fractal growth. When combined with Turtle Graphics,	*
+ * many beautiful shapes and realistic plant models can be drawn.	*
+ * 																	*
+ * Much more information can be found in Aristid Lindenmaer's book,	*
+ * The Algorithmic Beauty of Plants. This text provides invaluable	*
+ * knowledge about rewriting systems, plant growth, biology,		*
+ * and computer graphics											*
+ * 																	*
+ * ******************************************************************/
+
 package turtle;
 
 import java.util.ArrayList;
@@ -128,6 +144,25 @@ public class LSystem {
 	
 	public ArrayList<String> LSystemKoch(ArrayList<String> inseq) {
 
+		String axiom = "F";
+		String next;
+
+		for (int i = 0; i < iterations; i++) {
+			
+			next = "";
+			for(int j = 0; j < axiom.length(); j++){
+				char c = axiom.charAt(j);
+				if(c == 'F')
+					next += "+F--F+";
+				else 
+					next += c;
+			}
+			
+			axiom = next;
+		}
+
+		return axiom;
+		
 		ArrayList<String> sequence = new ArrayList<String>();
 
 		for (int j = 0; j < inseq.size(); j++) {
