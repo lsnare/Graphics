@@ -36,7 +36,6 @@ public class Turtle {
 	
 	//Stacks to hold position and angle values
 	protected Stack<Location> lStack = new Stack<Location>();
-	//protected Stack<Float> yStack = new Stack<Float>();
 	protected Stack<Double> aStack = new Stack<Double>();
 
 	//tiny class for location of turtle
@@ -48,6 +47,7 @@ public class Turtle {
 		}
 	}
 	
+	//stores the locations that the turtle has visited
 	public ArrayList<Location> path = new ArrayList<Location>();
 	
 	
@@ -63,6 +63,10 @@ public class Turtle {
 		loc.x = x;
 		loc.y = y;
 	}
+	
+	/*
+	 * Turtle movement methods
+	 */
 	
 	public void forward(float distance){
 		//create new path so it is not overwritten
@@ -106,8 +110,10 @@ public class Turtle {
 		ink = position;
 	}
 	
+	//OpenGL setup method
 	public void show(){
 		
+		//Create a display
 		try {
 			Display.setDisplayMode(new DisplayMode(800,800));
 			Display.create();
@@ -126,8 +132,10 @@ public class Turtle {
 			GL11.glClearColor(1, 1, 1, 0);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glColor3f(0.0f, 0.0f, 0.0f);
+			//Vertices will be connected by lines
 			GL11.glBegin(GL11.GL_LINES);
 			
+			//Add turtle path locations as vertices
 			for (Location ll : path){
 				GL11.glVertex2f(ll.x, ll.y);
 			}
@@ -203,5 +211,32 @@ public class Turtle {
 			size+=5;
 		}while(size<max);
 		pen(false);
+	}
+	
+	public static void main(String[] args) {
+		
+		Turtle turtle = new Turtle();
+		LSystem l = new LSystem();
+		
+		//The string that will be modified by L-System operations
+		String seq = new String();
+		
+		/*
+		 * L-Systems with optimal number of iterations
+		 */
+		
+		//seq = l.LSystemDragon(13);
+		//seq = l.LSystemSierpinski(7);
+		//seq = l.LSystemLevy(10);
+		//seq = l.LSystemBrush(5);
+		//seq = l.LSystemKochSnowflake(4);
+		//seq = l.LSystemThueMorse(13);
+		//seq = l.LSystemTree(6);
+		
+		turtle.init(300,400,0);
+		turtle.pen(true);
+		
+		turtle.interpretLSystem(seq, 5, l.angle);
+		turtle.show();
 	}
 }
